@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>배당투자 vs 부동산 월세투자: 현금흐름 전략 리포트</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+        body { font-family: 'Noto Sans KR', sans-serif; }
+        .chart-container { 
+            position: relative; 
+            width: 100%; 
+            max-width: 600px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            height: 350px; 
+            max-height: 400px; 
+        }
+        .card-hover:hover { transform: translateY(-4px); transition: all 0.3s ease; }
+        .tab-active { border-bottom: 2px solid #059669; color: #059669; font-weight: 700; }
+        .tab-inactive { color: #78716c; }
+        .hidden-section { display: none; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800 leading-relaxed">
+
+    <!-- Chosen Palette: Warm Neutrals (Stone) with Emerald (Growth/Money) and Amber (Real Assets) accents -->
+    <!-- Application Structure Plan:
+        1. **Header/Hero**: Establishes the core theme "Cash Flow".
+        2. **Interactive Dashboard (Tabs)**:
+           - **Overview & Radar**: A high-level visual comparison using a Radar Chart to show the trade-offs (Liquidity, Effort, Leverage, etc.) immediately.
+           - **Detailed Comparison**: An interactive matrix where users can click categories to see specific differences between Dividend and Real Estate.
+           - **Pros & Cons Explorer**: Flip cards or expandable sections to dive into the benefits and risks.
+           - **Strategy Finder**: A simple interactive quiz based on the "Conclusion" section to recommend a strategy.
+        3. **Footer**: Summary and final takeaway.
+        This structure moves from abstract/visual -> concrete data -> analysis -> personal application.
+    -->
+    <!-- Visualization & Content Choices:
+        - **Radar Chart (Chart.js)**: To visually compare the multidimensional attributes (Liquidity, Ease of Mgmt, Leverage, Entry Barrier) of the two investment types. Best for showing "shape" of the investment profile.
+        - **Interactive List/Grid**: For the Comparison Table. Instead of a static table, use a grid where clicking a row highlights the winner or expands details.
+        - **State-based UI**: For the Strategy Finder. Users answer questions about their resources/traits, and JS filters the report's recommendations.
+        - **Text Cards**: For Pros/Cons, using clear typography and icons (Unicode) to separate insights.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <span class="font-bold text-xl text-stone-700">💰 현금흐름 연구소</span>
+                <div class="flex space-x-4 text-sm md:text-base">
+                    <button onclick="switchTab('dashboard')" id="btn-dashboard" class="tab-active px-3 py-4 focus:outline-none transition-colors">대시보드</button>
+                    <button onclick="switchTab('comparison')" id="btn-comparison" class="tab-inactive px-3 py-4 focus:outline-none transition-colors hover:text-stone-600">상세 비교</button>
+                    <button onclick="switchTab('strategy')" id="btn-strategy" class="tab-inactive px-3 py-4 focus:outline-none transition-colors hover:text-stone-600">나의 전략 찾기</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="max-w-6xl mx-auto px-4 py-8">
+
+        <!-- Tab 1: Dashboard (Visual Overview) -->
+        <section id="dashboard" class="fade-in">
+            <div class="mb-10 text-center max-w-3xl mx-auto">
+                <h1 class="text-3xl md:text-4xl font-bold mb-4 text-stone-900">배당투자 vs 부동산 월세투자</h1>
+                <p class="text-lg text-stone-600">
+                    자산 관리의 핵심은 지속 가능한 <strong>현금흐름(Cash Flow)</strong>을 만드는 것입니다. 
+                    전통의 강자 '부동산'과 현대적 대안 '배당투자', 당신에게 맞는 정답은 무엇일까요?
+                </p>
+            </div>
+
+            <!-- Intro Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-emerald-500">
+                    <h2 class="text-xl font-bold mb-2 text-emerald-700">📈 배당투자 (주식·ETF)</h2>
+                    <p class="text-stone-600 mb-4">기업의 이익을 공유하며 주가 상승과 배당금을 동시에 추구합니다. 소액으로 시작 가능한 시스템 수익입니다.</p>
+                    <div class="flex gap-2">
+                        <span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-1 rounded-full">높은 유동성</span>
+                        <span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-1 rounded-full">관리 편의성</span>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-amber-600">
+                    <h2 class="text-xl font-bold mb-2 text-amber-800">🏢 부동산 월세투자</h2>
+                    <p class="text-stone-600 mb-4">실물 자산을 소유하여 월 임대료와 시세 상승을 얻습니다. 레버리지를 활용한 자산 증식에 유리합니다.</p>
+                    <div class="flex gap-2">
+                        <span class="bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-full">레버리지 효과</span>
+                        <span class="bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-full">인플레이션 헤지</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Radar Chart Section -->
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md mb-12">
+                <div class="mb-6">
+                    <h3 class="text-2xl font-bold text-stone-800">투자 속성 시각화 비교</h3>
+                    <p class="text-stone-500 mt-2">
+                        두 투자 방식의 성격을 5가지 핵심 지표로 분석했습니다. 
+                        넓은 면적을 차지할수록 해당 속성에서 우위에 있음을 의미합니다.
+                    </p>
+                </div>
+                
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <div class="w-full md:w-1/2 flex justify-center">
+                        <div class="chart-container">
+                            <canvas id="comparisonRadar"></canvas>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/2 space-y-4">
+                        <div class="p-4 bg-stone-50 rounded-lg">
+                            <h4 class="font-bold text-emerald-700 mb-1">🟢 배당투자가 유리한 점</h4>
+                            <ul class="list-disc list-inside text-sm text-stone-600 space-y-1">
+                                <li><strong>유동성:</strong> 클릭 한 번으로 현금화 가능</li>
+                                <li><strong>접근성:</strong> 커피 한 잔 값(소액)으로 시작 가능</li>
+                                <li><strong>관리 편의:</strong> 유지보수나 임차인 관리 불필요</li>
+                            </ul>
+                        </div>
+                        <div class="p-4 bg-stone-50 rounded-lg">
+                            <h4 class="font-bold text-amber-800 mb-1">🟠 부동산이 유리한 점</h4>
+                            <ul class="list-disc list-inside text-sm text-stone-600 space-y-1">
+                                <li><strong>레버리지:</strong> 대출을 활용해 수익률 극대화 용이</li>
+                                <li><strong>강제 저축:</strong> 낮은 유동성이 장기 보유를 강제함</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 2: Detailed Comparison (Interactive Matrix) -->
+        <section id="comparison" class="hidden-section fade-in">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold mb-2">상세 비교 분석</h2>
+                <p class="text-stone-600">항목을 클릭하여 상세 내용을 확인하세요. 각 투자처의 현실적인 차이를 비교합니다.</p>
+            </div>
+
+            <!-- Interactive Accordion List -->
+            <div class="space-y-4" id="comparison-list">
+                <!-- Javascript will populate this -->
+            </div>
+
+            <!-- Pros and Cons Grid -->
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Dividend Pros/Cons -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="bg-emerald-50 p-4 border-b border-emerald-100">
+                        <h3 class="font-bold text-lg text-emerald-800 text-center">배당투자 심층 분석</h3>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="font-bold mb-3 flex items-center">✅ 장점 (Pros)</h4>
+                        <ul class="space-y-2 text-sm text-stone-600 mb-6">
+                            <li class="flex items-start"><span class="mr-2">🔹</span><span><strong>소액·분산 투자:</strong> ETF 활용 시 국가·섹터 단위 분산 가능</span></li>
+                            <li class="flex items-start"><span class="mr-2">🔹</span><span><strong>완전한 패시브 인컴:</strong> 관리 부담 거의 없음</span></li>
+                            <li class="flex items-start"><span class="mr-2">🔹</span><span><strong>세무 구조 단순:</strong> 원천징수로 종결 가능 (금융소득 2천만 원 이하)</span></li>
+                        </ul>
+                        <h4 class="font-bold mb-3 flex items-center text-red-600">⚠️ 단점 (Risks)</h4>
+                        <ul class="space-y-2 text-sm text-stone-600">
+                            <li class="flex items-start"><span class="mr-2">🔸</span><span><strong>시장 변동성:</strong> 주가 하락 및 배당 삭감 가능성</span></li>
+                            <li class="flex items-start"><span class="mr-2">🔸</span><span><strong>시간 필요:</strong> 절대 수익 규모 확대에 시간 소요</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Real Estate Pros/Cons -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="bg-amber-50 p-4 border-b border-amber-100">
+                        <h3 class="font-bold text-lg text-amber-800 text-center">부동산 월세투자 심층 분석</h3>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="font-bold mb-3 flex items-center">✅ 장점 (Pros)</h4>
+                        <ul class="space-y-2 text-sm text-stone-600 mb-6">
+                            <li class="flex items-start"><span class="mr-2">🔹</span><span><strong>안정적 현금흐름:</strong> 고정적인 월세 수입</span></li>
+                            <li class="flex items-start"><span class="mr-2">🔹</span><span><strong>레버리지 효과:</strong> 자기자본 대비 수익률 확대 용이</span></li>
+                            <li class="flex items-start"><span class="mr-2">🔹</span><span><strong>인플레이션 헤지:</strong> 실물자산 가치 상승</span></li>
+                        </ul>
+                        <h4 class="font-bold mb-3 flex items-center text-red-600">⚠️ 단점 (Risks)</h4>
+                        <ul class="space-y-2 text-sm text-stone-600">
+                            <li class="flex items-start"><span class="mr-2">🔸</span><span><strong>높은 진입장벽:</strong> 초기 자본 부담 큼, 낮은 유동성</span></li>
+                            <li class="flex items-start"><span class="mr-2">🔸</span><span><strong>관리 스트레스:</strong> 공실, 유지보수, 임차인 관리</span></li>
+                            <li class="flex items-start"><span class="mr-2">🔸</span><span><strong>정책 리스크:</strong> 세제 변화 및 입지 의존성</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 3: Strategy Builder (Interactive Quiz) -->
+        <section id="strategy" class="hidden-section fade-in">
+            <div class="max-w-3xl mx-auto">
+                <div class="mb-8 text-center">
+                    <h2 class="text-2xl font-bold mb-2">나에게 맞는 투자 전략은?</h2>
+                    <p class="text-stone-600">몇 가지 질문을 통해 리포트가 제안하는 최적의 전략을 확인해보세요.</p>
+                </div>
+
+                <div class="bg-white p-6 md:p-10 rounded-2xl shadow-lg border border-stone-100">
+                    <!-- Quiz Interface -->
+                    <div id="quiz-container" class="space-y-8">
+                        <div>
+                            <label class="block text-lg font-medium text-stone-800 mb-3">1. 현재 투자 가능한 가용 자금은 어느 정도인가요?</label>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <button onclick="setAnswer('capital', 'low')" class="quiz-btn border-2 border-stone-200 p-4 rounded-lg text-left hover:border-emerald-500 hover:bg-emerald-50 transition-all">
+                                    💰 3천만 원 미만 (소액)
+                                </button>
+                                <button onclick="setAnswer('capital', 'high')" class="quiz-btn border-2 border-stone-200 p-4 rounded-lg text-left hover:border-amber-500 hover:bg-amber-50 transition-all">
+                                    🏦 1억 원 이상 (고액)
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-lg font-medium text-stone-800 mb-3">2. 투자 관리에 쓸 수 있는 시간과 에너지는?</label>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <button onclick="setAnswer('effort', 'low')" class="quiz-btn border-2 border-stone-200 p-4 rounded-lg text-left hover:border-emerald-500 hover:bg-emerald-50 transition-all">
+                                    ⏳ 거의 없음 (본업 집중)
+                                </button>
+                                <button onclick="setAnswer('effort', 'high')" class="quiz-btn border-2 border-stone-200 p-4 rounded-lg text-left hover:border-amber-500 hover:bg-amber-50 transition-all">
+                                    🛠️ 충분함 (관리, 수리 가능)
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-lg font-medium text-stone-800 mb-3">3. 대출(레버리지) 활용에 대한 생각은?</label>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <button onclick="setAnswer('leverage', 'avoid')" class="quiz-btn border-2 border-stone-200 p-4 rounded-lg text-left hover:border-emerald-500 hover:bg-emerald-50 transition-all">
+                                    🚫 빚은 싫음 (무차입 선호)
+                                </button>
+                                <button onclick="setAnswer('leverage', 'active')" class="quiz-btn border-2 border-stone-200 p-4 rounded-lg text-left hover:border-amber-500 hover:bg-amber-50 transition-all">
+                                    💸 적극 활용 (수익 극대화)
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-8">
+                            <button onclick="calculateStrategy()" class="bg-stone-800 text-white px-8 py-3 rounded-full font-bold hover:bg-stone-900 transition-colors shadow-lg transform active:scale-95">결과 확인하기</button>
+                        </div>
+                    </div>
+
+                    <!-- Result Display (Hidden by default) -->
+                    <div id="result-container" class="hidden text-center fade-in">
+                        <div id="result-icon" class="text-6xl mb-4">✨</div>
+                        <h3 id="result-title" class="text-2xl font-bold mb-4 text-stone-800"></h3>
+                        <p id="result-desc" class="text-stone-600 mb-6 leading-relaxed"></p>
+                        
+                        <div class="bg-stone-100 p-4 rounded-lg text-sm text-stone-500 mb-6">
+                            <p>※ 이 결과는 리포트 내용을 바탕으로 한 단순 제안이며, 실제 투자는 개인의 판단이 필요합니다.</p>
+                        </div>
+
+                        <button onclick="resetQuiz()" class="text-emerald-600 font-semibold hover:underline">다시 하기</button>
+                    </div>
+                </div>
+
+                <div class="mt-12 bg-emerald-900 text-white p-6 rounded-xl shadow-lg">
+                    <h3 class="font-bold text-xl mb-2">📢 결론: 현실적인 최적의 대안</h3>
+                    <p class="mb-4 opacity-90">
+                        과거에는 부동산만이 답이었으나, 지금은 <strong>배당 성장주와 ETF</strong>가 강력한 대안입니다.
+                    </p>
+                    <blockquote class="italic border-l-4 border-emerald-400 pl-4 py-1">
+                        "시간과 노동력을 아껴주는 배당투자로 시작하여, 점진적으로 부동산 비중을 늘려가는 <strong>혼합 포트폴리오</strong>가 가장 현실적이고 강력한 대안입니다."
+                    </blockquote>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-stone-800 text-stone-300 py-8 mt-12">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <p class="text-sm">Source: 배당투자 vs 부동산 월세투자 비교 리포트</p>
+            <p class="text-xs mt-2 opacity-50">본 애플리케이션은 정보 제공을 목적으로 하며 투자 권유가 아닙니다.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Data & State ---
+        const comparisonData = [
+            { category: "수익원", div: "배당금 + 주가 상승", re: "월 임대료 + 시세 상승", note: "둘 다 자산 가치 상승과 현금 흐름을 동시에 노립니다." },
+            { category: "초기 투자금", div: "소액 가능 (1만 원~)", re: "고액 필요 (수천만 원~)", highlight: "div", note: "진입 장벽에서 배당투자가 압도적으로 유리합니다." },
+            { category: "유동성", div: "매우 높음 (즉시 매도)", re: "낮음 (매각 시간 소요)", highlight: "div", note: "급전이 필요할 때 배당주식이 훨씬 안전합니다." },
+            { category: "관리 부담", div: "거의 없음 (시스템)", re: "높음 (수리, 민원 등)", highlight: "div", note: "직장인에게는 관리 부담 없는 배당투자가 적합합니다." },
+            { category: "레버리지", div: "제한적 (신용/미수)", re: "높음 (주택담보대출)", highlight: "re", note: "자산을 뻥튀기하는 데는 부동산 대출이 유리합니다." },
+            { category: "세금", div: "배당소득세 (15.4%)", re: "취득/보유/양도/임대세", highlight: "div", note: "부동산 세금은 정책에 따라 매우 복잡합니다." },
+            { category: "분산 투자", div: "매우 용이 (ETF)", re: "제한적 (입지 의존)", highlight: "div", note: "전 세계 자산에 나눠 담기 쉽습니다." }
+        ];
+
+        let userAnswers = {
+            capital: null,
+            effort: null,
+            leverage: null
+        };
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderRadarChart();
+            renderComparisonList();
+        });
+
+        // --- Navigation Logic ---
+        function switchTab(tabId) {
+            // Hide all sections
+            ['dashboard', 'comparison', 'strategy'].forEach(id => {
+                document.getElementById(id).classList.add('hidden-section');
+                document.getElementById('btn-' + id).classList.remove('tab-active');
+                document.getElementById('btn-' + id).classList.add('tab-inactive');
+            });
+
+            // Show selected section
+            document.getElementById(tabId).classList.remove('hidden-section');
+            document.getElementById('btn-' + tabId).classList.add('tab-active');
+            document.getElementById('btn-' + tabId).classList.remove('tab-inactive');
+            
+            // Re-render chart if hidden previously (fixes generic canvas resize issues)
+            if(tabId === 'dashboard') {
+                // optional refresh logic if needed
+            }
+        }
+
+        // --- Chart.js Implementation ---
+        function renderRadarChart() {
+            const ctx = document.getElementById('comparisonRadar').getContext('2d');
+            
+            // Data Translation from Report concepts to Score (1-10)
+            // Liquidity: Div(10), RE(2)
+            // Low Entry Barrier: Div(10), RE(1)
+            // Ease of Mgmt: Div(9), RE(2)
+            // Leverage Power: Div(3), RE(10)
+            // Tax Simplicity: Div(8), RE(3)
+            
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['유동성 (환금성)', '진입 장벽 (낮음)', '관리 편의성', '레버리지 효과', '세무 간편성'],
+                    datasets: [{
+                        label: '배당투자',
+                        data: [10, 10, 9, 3, 8],
+                        backgroundColor: 'rgba(16, 185, 129, 0.2)', // Emerald-500 with opacity
+                        borderColor: 'rgba(16, 185, 129, 1)',
+                        pointBackgroundColor: 'rgba(16, 185, 129, 1)',
+                        borderWidth: 2
+                    }, {
+                        label: '부동산 월세',
+                        data: [2, 1, 2, 10, 3],
+                        backgroundColor: 'rgba(245, 158, 11, 0.2)', // Amber-500 with opacity
+                        borderColor: 'rgba(245, 158, 11, 1)',
+                        pointBackgroundColor: 'rgba(245, 158, 11, 1)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: '#e5e7eb' },
+                            grid: { color: '#e5e7eb' },
+                            pointLabels: {
+                                font: { size: 12, family: "'Noto Sans KR', sans-serif", weight: 'bold' },
+                                color: '#44403c'
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 10,
+                            ticks: { display: false } // hide numbers on axis
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.raw + '점';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- Comparison List Rendering ---
+        function renderComparisonList() {
+            const container = document.getElementById('comparison-list');
+            container.innerHTML = comparisonData.map((item, index) => `
+                <div class="bg-white border border-stone-200 rounded-lg overflow-hidden cursor-pointer hover:border-stone-400 transition-colors" onclick="toggleDetail(${index})">
+                    <div class="grid grid-cols-12 p-4 items-center gap-4">
+                        <div class="col-span-12 md:col-span-2 font-bold text-stone-700">${item.category}</div>
+                        <div class="col-span-5 md:col-span-4 p-2 rounded ${item.highlight === 'div' ? 'bg-emerald-50 text-emerald-800 font-semibold' : 'text-stone-600'} text-sm md:text-base">
+                            ${item.highlight === 'div' ? '🏆 ' : ''}${item.div}
+                        </div>
+                        <div class="col-span-2 md:col-span-2 text-center text-stone-400 font-bold">VS</div>
+                        <div class="col-span-5 md:col-span-4 p-2 rounded ${item.highlight === 're' ? 'bg-amber-50 text-amber-800 font-semibold' : 'text-stone-600'} text-sm md:text-base">
+                             ${item.highlight === 're' ? '🏆 ' : ''}${item.re}
+                        </div>
+                    </div>
+                    <div id="detail-${index}" class="hidden bg-stone-50 p-4 text-sm text-stone-600 border-t border-stone-100">
+                        💡 <strong>Insight:</strong> ${item.note}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleDetail(index) {
+            const detail = document.getElementById(`detail-${index}`);
+            detail.classList.toggle('hidden');
+        }
+
+        // --- Quiz Logic ---
+        function setAnswer(key, value) {
+            userAnswers[key] = value;
+            
+            // Visual feedback for selection
+            const buttons = document.querySelectorAll(`button[onclick="setAnswer('${key}', '${value}')"]`);
+            // Reset siblings
+            const parent = buttons[0].parentElement;
+            parent.querySelectorAll('button').forEach(btn => {
+                btn.classList.remove('ring-2', 'ring-stone-500', 'bg-stone-100');
+                btn.classList.add('border-stone-200');
+            });
+            // Highlight selected
+            buttons[0].classList.remove('border-stone-200');
+            buttons[0].classList.add('ring-2', 'ring-stone-500', 'bg-stone-100');
+        }
+
+        function calculateStrategy() {
+            // Check if all answered
+            if (!userAnswers.capital || !userAnswers.effort || !userAnswers.leverage) {
+                alert("모든 질문에 답변해주세요!");
+                return;
+            }
+
+            const container = document.getElementById('quiz-container');
+            const result = document.getElementById('result-container');
+            
+            container.classList.add('hidden');
+            result.classList.remove('hidden');
+
+            const titleEl = document.getElementById('result-title');
+            const descEl = document.getElementById('result-desc');
+            const iconEl = document.getElementById('result-icon');
+
+            // Logic based on report conclusions
+            // 1. Low Capital OR Low Effort -> Dividend Focus
+            // 2. High Capital AND High Effort AND Active Leverage -> Real Estate
+            // 3. Mixed -> Hybrid
+
+            if (userAnswers.capital === 'low' || userAnswers.effort === 'low') {
+                iconEl.innerText = "🌱";
+                titleEl.innerText = "현금흐름 중심의 패시브 전략";
+                descEl.innerHTML = "당신에게는 <strong>배당투자</strong>가 적합합니다. <br>초기 자본이 적거나 관리할 시간이 부족한 상황에서는 무리한 부동산 투자보다, 미국/한국의 우량 배당 ETF나 월배당 상품을 모아가는 것이 시간 효율성과 수익성을 모두 잡는 길입니다.";
+            } else if (userAnswers.capital === 'high' && userAnswers.effort === 'high' && userAnswers.leverage === 'active') {
+                iconEl.innerText = "🏢";
+                titleEl.innerText = "자산 극대화 (레버리지) 전략";
+                descEl.innerHTML = "당신에게는 <strong>부동산 월세 투자</strong>가 유효합니다. <br>충분한 자본과 관리 능력이 있고 대출을 적극 활용할 의지가 있다면, 소형 아파트나 오피스텔 임대를 통해 자산 규모를 빠르게 키우는 것이 유리합니다.";
+            } else {
+                iconEl.innerText = "⚖️";
+                titleEl.innerText = "하이브리드 (혼합) 포트폴리오";
+                descEl.innerHTML = "당신에게는 <strong>배당 + 부동산 혼합 전략</strong>을 추천합니다. <br>배당투자로 관리 부담 없는 현금흐름을 확보하면서, 인플레이션 방어를 위해 소형 부동산 비중을 일부 가져가는 것이 안정적입니다.";
+            }
+        }
+
+        function resetQuiz() {
+            userAnswers = { capital: null, effort: null, leverage: null };
+            document.getElementById('quiz-container').classList.remove('hidden');
+            document.getElementById('result-container').classList.add('hidden');
+            
+            // Reset styles
+            document.querySelectorAll('.quiz-btn').forEach(btn => {
+                btn.classList.remove('ring-2', 'ring-stone-500', 'bg-stone-100');
+                btn.classList.add('border-stone-200');
+            });
+        }
+
+    </script>
+</body>
+</html>

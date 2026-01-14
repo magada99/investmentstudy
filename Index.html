@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>투자이야기 - 나의투자이야기</title>
+  <style>
+    :root{
+      --bg:#0b1220; --panel:#0f1930; --line:rgba(255,255,255,.12);
+      --text:#e8eefc; --muted:#a9b6d4; --accent:#7aa7ff;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; font-family:system-ui,"Noto Sans KR",sans-serif; background:var(--bg); color:var(--text);}
+    header{
+      padding:14px 18px; border-bottom:1px solid var(--line);
+      background:rgba(10,16,30,.6); backdrop-filter: blur(10px);
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    header .title{font-weight:800; letter-spacing:.2px}
+    .wrap{display:grid; grid-template-columns: 280px 1fr; height: calc(100vh - 56px);}
+    nav{
+      border-right:1px solid var(--line); background:rgba(255,255,255,.03);
+      padding:14px;
+      overflow:auto;
+    }
+    .menu{
+      display:flex; flex-direction:column; gap:8px;
+    }
+    .item{
+      padding:10px 12px; border:1px solid var(--line); border-radius:12px;
+      background:rgba(255,255,255,.04); cursor:pointer; user-select:none;
+      color:var(--text); text-decoration:none;
+      display:flex; gap:10px; align-items:center;
+    }
+    .item:hover{background:rgba(255,255,255,.08)}
+    .item.active{border-color:rgba(122,167,255,.6); box-shadow:0 0 0 2px rgba(122,167,255,.18) inset;}
+    .num{
+      width:22px; height:22px; border-radius:8px;
+      display:inline-flex; align-items:center; justify-content:center;
+      background:rgba(122,167,255,.18); color:var(--accent); font-weight:800; font-size:12px;
+    }
+    main{padding:0; background:rgba(255,255,255,.02);}
+    iframe{
+      width:100%; height:100%; border:0; background:white;
+    }
+    .hint{color:var(--muted); font-size:12px; margin-top:10px; line-height:1.5}
+    .top-actions{display:flex; gap:10px; align-items:center; color:var(--muted); font-size:13px}
+    button{
+      border:1px solid var(--line); background:rgba(255,255,255,.06);
+      color:var(--text); border-radius:10px; padding:8px 10px; cursor:pointer;
+    }
+    button:hover{background:rgba(255,255,255,.10)}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="title">투자이야기 <span style="opacity:.65;font-weight:600">| 나의투자이야기</span></div>
+    <div class="top-actions">
+      <span id="currentLabel">선택: -</span>
+      <button id="openNew">새 탭으로 열기</button>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <nav>
+      <div class="menu" id="menu"></div>
+      <div class="hint">
+        • 왼쪽 메뉴 클릭 → 오른쪽에서 문서가 열립니다.<br/>
+        • 같은 폴더에 html 파일을 두면 경로 문제가 없습니다.<br/>
+        • 파일을 더 늘릴 땐 목록에만 추가하면 됩니다.
+      </div>
+    </nav>
+
+    <main>
+      <iframe id="viewer" src="capital.html" title="viewer"></iframe>
+    </main>
+  </div>
+
+  <script>
+    const pages = [
+      { id: 1, title: "자본/투자/소비", file: "capital.html" },
+      { id: 2, title: "투자의 등급", file: "risk.html" },
+      { id: 3, title: "채권", file: "bond.html" },
+      { id: 4, title: "배당투자", file: "dividend.html" },
+      { id: 5, title: "리츠투자", file: "reits.html" },
+      { id: 6, title: "절세가이드", file: "allocation.html" },
+      { id: 7, title: "가치투자", file: "growth.html" },
+      { id: 8, title: "투자는 회사처럼", file: "practice.html" }
+    ];
+
+    const menu = document.getElementById("menu");
+    const viewer = document.getElementById("viewer");
+    const currentLabel = document.getElementById("currentLabel");
+    const openNew = document.getElementById("openNew");
+
+    let currentFile = viewer.getAttribute("src");
+
+    function setActive(file){
+      currentFile = file;
+      [...menu.querySelectorAll(".item")].forEach(a => {
+        a.classList.toggle("active", a.dataset.file === file);
+      });
+      const p = pages.find(x => x.file === file);
+      currentLabel.textContent = "선택: " + (p ? p.title : "-");
+      document.title = `투자이야기 - ${p ? p.title : "나의투자이야기"}`;
+    }
+
+    pages.forEach(p => {
+      const a = document.createElement("a");
+      a.href = "#"+p.file;
+      a.className = "item";
+      a.dataset.file = p.file;
+      a.innerHTML = `<span class="num">${p.id}</span><span>${p.title}</span>`;
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        viewer.src = p.file;
+        location.hash = p.file; // 새로고침해도 유지
+        setActive(p.file);
+      });
+      menu.appendChild(a);
+    });
+
+    openNew.addEventListener("click", () => window.open(currentFile, "_blank"));
+
+    // 해시로 직접 접근(새로고침/북마크 대응)
+    function syncFromHash(){
+      const h = location.hash.replace("#","");
+      const target = pages.find(p => p.file === h);
+      if(target){
+        viewer.src = target.file;
+        setActive(target.file);
+      } else {
+        // 기본 페이지
+        setActive(viewer.getAttribute("src"));
+      }
+    }
+
+    window.addEventListener("hashchange", syncFromHash);
+    syncFromHash();
+  </script>
+</body>
+</html>

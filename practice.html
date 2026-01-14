@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>투자는 회사 운영이다 | 자산 배분 전략</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary: #003366;      /* 배당/신뢰 */
+            --secondary: #708090;    /* 채권/안정 */
+            --accent: #2E8B57;       /* 성장/수익 */
+            --gold: #B8860B;         /* 원자재/헤지 */
+            --bg-light: #FBFBFC;
+            --text-dark: #1F2937;
+            --text-gray: #4B5563;
+            --border: #E5E7EB;
+        }
+
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+
+        body { 
+            font-family: 'Noto Sans KR', sans-serif; 
+            background-color: var(--bg-light); 
+            color: var(--text-dark); 
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header Navigation */
+        nav {
+            background: white;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 1px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 100px 10% 80px;
+            text-align: center;
+            background: white;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: var(--text-gray);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Section Styling */
+        section {
+            padding: 80px 10%;
+        }
+
+        .section-title {
+            font-size: 32px;
+            margin-bottom: 50px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+        }
+
+        /* Org Chart Grid */
+        .org-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .org-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .org-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        .org-card .weight {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .org-card h3 { margin-bottom: 15px; font-size: 22px; }
+        .org-card ul { list-style: none; text-align: left; margin-top: 20px; }
+        .org-card li { font-size: 14px; margin-bottom: 8px; color: var(--text-gray); }
+        .org-card li::before { content: "•"; color: var(--primary); margin-right: 8px; }
+
+        /* Philosophy Section */
+        .philosophy {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+        }
+
+        .philosophy blockquote {
+            font-size: 28px;
+            font-weight: 300;
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .philosophy blockquote strong {
+            color: #4da6ff;
+            font-weight: 700;
+        }
+
+        /* Portfolio Detail */
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f9fafb;
+            text-align: left;
+            padding: 15px 20px;
+            font-size: 14px;
+            text-transform: uppercase;
+            color: var(--text-gray);
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+            font-size: 15px;
+        }
+
+        .ticker-tag {
+            background: #f3f4f6;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-right: 5px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Chart Visualization Placeholder */
+        .chart-mockup {
+            width: 100%;
+            height: 300px;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .bar {
+            flex: 1;
+            background: var(--primary);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+        }
+
+        .bar::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        /* Footer */
+        footer {
+            padding: 50px 10%;
+            background: #111827;
+            color: #9CA3AF;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .detail-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 32px; }
+            nav { padding: 0 5%; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">PORTFOLIO MGMT</div>
+    <div style="font-size: 14px; color: var(--text-gray);">통합 멀티에셋 자산배분</div>
+</nav>
+
+<section class="hero">
+    <h1>투자는 회사 운영이다</h1>
+    <p>우리는 투자를 단순한 시세 차익의 수단이 아닌, 지속 가능한 현금흐름을 창출하는 기업 경영의 관점으로 접근합니다.</p>
+</section>
+
+<section class="philosophy">
+    <blockquote>
+        “배당과 채권으로 현금흐름의 <strong>하방을 고정</strong>하고,<br>
+        성장 자산으로 <strong>상방을 확보</strong>하며,<br>
+        원자재로 시스템 리스크를 <strong>헤지</strong>합니다.”
+    </blockquote>
+</section>
+
+<section id="organization">
+    <h2 class="section-title">조직 구조 및 자산 비중</h2>
+    <div class="org-grid">
+        <div class="org-card">
+            <span class="weight" style="color: var(--primary);">40%</span>
+            <h3>배당투자본부</h3>
+            <p style="font-size: 14px; color: var(--text-gray);">Core Cash Flow</p>
+            <ul>
+                <li>국내/해외 배당주</li>
+                <li>리츠(REITs) 및 BDC</li>
+                <li>월배당 인컴 전략</li>
+            </ul>
+        </div>
+        <div class="org-card">
+            <span class="weight" style="color: var(--secondary);">30%</span>
+            <h3>채권투자본부</h3>
+            <p style="font-size: 14px; color: var(--text-gray);">Stability Control</p>
+            <ul>
+                <li>단기 채권 및 CD금리</li>
+                <li>만기매칭형 펀드</li>
+                <li>변동성 방어 기제</li>
+            </ul>
+        </div>
+        <div class="org-card">
+            <span class="weight" style="color: var(--accent);">20%</span>
+            <h3>성장투자본부</h3>
+            <p style="font-size: 14px; color: var(--text-gray);">Growth Engine</p>
+            <ul>
+                <li>빅테크 및 AI 산업</li>
+                <li>전력 인프라 (GRID)</li>
+                <li>구조적 성주주 집중</li>
+            </ul>
+        </div>
+        <div class="org-card">
+            <span class="weight" style="color: var(--gold);">10%</span>
+            <h3>원자재투자본부</h3>
+            <p style="font-size: 14px; color: var(--text-gray);">Risk Hedge</p>
+            <ul>
+                <li>실물 금/은 투자</li>
+                <li>인플레이션 헤지</li>
+                <li>시스템 위기 대응</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section id="strategy" style="background: #f9fafb;">
+    <h2 class="section-title">Investment Universe</h2>
+    <div class="detail-grid">
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>구분</th>
+                        <th>핵심 전략</th>
+                        <th>주요 자산 (Tickers)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>배당</strong></td>
+                        <td>안정적 인컴</td>
+                        <td><span class="ticker-tag">SCHD</span><span class="ticker-tag">VIG</span><span class="ticker-tag">MAIN</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>채권</strong></td>
+                        <td>유동성 관리</td>
+                        <td><span class="ticker-tag">SHY</span><span class="ticker-tag">CD금리</span><span class="ticker-tag">국고채</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>성장</strong></td>
+                        <td>기술적 우위</td>
+                        <td><span class="ticker-tag">QQQM</span><span class="ticker-tag">VGT</span><span class="ticker-tag">XLU</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>헤지</strong></td>
+                        <td>인플레 방어</td>
+                        <td><span class="ticker-tag">GLD</span><span class="ticker-tag">IAU</span><span class="ticker-tag">SLV</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <h3 style="margin-bottom: 20px;">구조적 복원력(Resilience)</h3>
+            <p style="margin-bottom: 20px; font-size: 16px; color: var(--text-gray);">시장 상황에 관계없이 작동하는 포트폴리오를 지향합니다. 배당과 채권이라는 두 기둥이 하락장에서 버팀목 역할을 하는 동안, 성장 자산은 강세장에서 초과 수익을 견인합니다.</p>
+            <div class="chart-mockup">
+                <div class="bar" style="height: 80%; background: var(--primary);" data-label="Dividend"></div>
+                <div class="bar" style="height: 60%; background: var(--secondary);" data-label="Bonds"></div>
+                <div class="bar" style="height: 40%; background: var(--accent);" data-label="Growth"></div>
+                <div class="bar" style="height: 20%; background: var(--gold);" data-label="Hedge"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>© 2024 Integrated Investment Management. All Rights Reserved.</p>
+    <p style="margin-top: 10px; font-size: 12px; opacity: 0.6;">본 페이지는 포트폴리오 운영 전략 가이드를 목적으로 작성되었습니다.</p>
+</footer>
+
+</body>
+</html>

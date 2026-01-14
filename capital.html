@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>투자 기초 이해: 소득, 자금 분류, 위험등급</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .gradient-bg { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
+        .card { background: white; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); transition: transform 0.2s; }
+        .card:hover { transform: translateY(-4px); }
+        .highlight { color: #2563eb; font-weight: 700; }
+        .risk-1 { background-color: #fee2e2; border-left: 4px solid #ef4444; }
+        .risk-2 { background-color: #ffedd5; border-left: 4px solid #f97316; }
+        .risk-3 { background-color: #fef9c3; border-left: 4px solid #eab308; }
+        .risk-4 { background-color: #ecfdf5; border-left: 4px solid #10b981; }
+        .risk-5 { background-color: #eff6ff; border-left: 4px solid #3b82f6; }
+        .risk-6 { background-color: #f8fafc; border-left: 4px solid #94a3b8; }
+    </style>
+</head>
+<body class="pb-20">
+
+    <!-- Header -->
+    <header class="gradient-bg text-white py-16 px-6 text-center">
+        <h1 class="text-3xl md:text-4xl font-bold mb-4">📘 투자 기초 이해를 위한 전체 구조</h1>
+        <p class="text-lg opacity-90">소득 · 자금 분류 · 투자 위험등급 한 번에 이해하기</p>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 -mt-10">
+        
+        <!-- Section 1: Introduction -->
+        <section class="card p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+                <span class="bg-blue-100 text-blue-600 p-2 rounded-lg mr-3"><i class="fas fa-chart-line"></i></span>
+                예·적금만으로는 자산이 늘지 않는 이유
+            </h2>
+            <div class="space-y-4">
+                <p class="text-lg leading-relaxed text-gray-700">
+                    월급은 꾸준히 받는데 왜 내 자산은 제자리일까요? 그 이유는 기술의 부족이 아니라 <span class="highlight">소득·소비·투자의 구조</span>를 이해하지 못했기 때문입니다.
+                </p>
+                <div class="bg-blue-50 p-6 rounded-xl border-l-4 border-blue-500">
+                    <p class="font-bold text-blue-800 mb-2">오늘의 목표</p>
+                    <p class="text-blue-700">“돈의 흐름을 이해하고, 투자에 대한 막연한 두려움을 없애는 것”</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Structure -->
+        <section class="card p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-6">돈은 이렇게 흘러야 합니다</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-red-50 p-6 rounded-xl">
+                    <h3 class="font-bold text-red-600 mb-4 text-center">❌ 잘못된 구조</h3>
+                    <div class="flex flex-col items-center space-y-2">
+                        <div class="bg-white px-4 py-2 rounded shadow text-sm">소득</div>
+                        <i class="fas fa-arrow-down text-red-300"></i>
+                        <div class="bg-white px-4 py-2 rounded shadow text-sm">소비</div>
+                        <i class="fas fa-arrow-down text-red-300"></i>
+                        <div class="text-red-500 font-bold italic">남는 돈 없음</div>
+                    </div>
+                </div>
+                <div class="bg-green-50 p-6 rounded-xl">
+                    <h3 class="font-bold text-green-600 mb-4 text-center">⭕ 바람직한 구조</h3>
+                    <div class="flex flex-col items-center space-y-2">
+                        <div class="bg-white px-4 py-2 rounded shadow text-sm font-bold">소득</div>
+                        <i class="fas fa-arrow-down text-green-300"></i>
+                        <div class="bg-green-600 text-white px-4 py-2 rounded shadow text-sm font-bold">투자(자산)</div>
+                        <i class="fas fa-arrow-down text-green-300"></i>
+                        <div class="bg-white px-4 py-2 rounded shadow text-sm">수익</div>
+                        <i class="fas fa-arrow-down text-green-300"></i>
+                        <div class="bg-blue-600 text-white px-4 py-2 rounded shadow text-sm font-bold">소비</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 text-center space-y-2">
+                <p class="text-xl font-bold">"소비는 <span class="text-blue-600">투자의 수익</span>으로 하는 것입니다."</p>
+                <p class="text-gray-500">소득은 자산을 만드는 원천이 되어야 합니다.</p>
+            </div>
+        </section>
+
+        <!-- Section 3: Classification -->
+        <section class="card p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-6 text-center">월급 즉시 자금 분류 4단계</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="text-center p-4 bg-gray-50 rounded-lg border">
+                    <i class="fas fa-file-invoice-dollar text-2xl text-gray-400 mb-2"></i>
+                    <p class="font-bold">고정지출</p>
+                </div>
+                <div class="text-center p-4 bg-gray-50 rounded-lg border">
+                    <i class="fas fa-shopping-cart text-2xl text-orange-400 mb-2"></i>
+                    <p class="font-bold">생활비</p>
+                </div>
+                <div class="text-center p-4 bg-gray-50 rounded-lg border">
+                    <i class="fas fa-shield-alt text-2xl text-green-400 mb-2"></i>
+                    <p class="font-bold">비상금</p>
+                </div>
+                <div class="text-center p-4 bg-blue-50 rounded-lg border-2 border-blue-200">
+                    <i class="fas fa-seedling text-2xl text-blue-500 mb-2"></i>
+                    <p class="font-bold">투자자금</p>
+                </div>
+            </div>
+            <p class="mt-6 text-center text-gray-600 italic">돈을 모으는 차이는 금액이 아니라 '분리 여부'에 있습니다.</p>
+        </section>
+
+        <!-- Section 4-6: Detailed Breakdown -->
+        <div class="grid md:grid-cols-3 gap-6 mb-8">
+            <div class="card p-6 border-t-4 border-orange-400">
+                <h3 class="font-bold text-lg mb-3">1. 소비 (통제)</h3>
+                <ul class="text-sm space-y-2 text-gray-600">
+                    <li>• 고정지출: 보험, 월세 등</li>
+                    <li>• 생활비: 체크카드 활용</li>
+                    <li>• 목적: 절약보다 <span class="font-bold">통제</span></li>
+                </ul>
+            </div>
+            <div class="card p-6 border-t-4 border-green-400">
+                <h3 class="font-bold text-lg mb-3">2. 비상금 (안전장치)</h3>
+                <ul class="text-sm space-y-2 text-gray-600">
+                    <li>• 보관: CMA, 단기채</li>
+                    <li>• 성격: 투자도 소비도 아님</li>
+                    <li>• 목적: <span class="font-bold">불안 감소</span>로 투자 유지</li>
+                </ul>
+            </div>
+            <div class="card p-6 border-t-4 border-blue-400">
+                <h3 class="font-bold text-lg mb-3">3. 투자자금 (분리)</h3>
+                <ul class="text-sm space-y-2 text-gray-600">
+                    <li>• 특징: 변동성 감내</li>
+                    <li>• 주의: 생활비와 섞지 말 것</li>
+                    <li>• 목적: <span class="font-bold">자산 증식</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 7-8: Risk Levels Table -->
+        <section class="card p-8 mb-8 overflow-hidden">
+            <h2 class="text-2xl font-bold mb-2">투자 위험등급 전체 구조</h2>
+            <p class="text-gray-500 mb-6">수익률이 아니라 '얼마나 버틸 수 있는가'의 기준입니다.</p>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b-2 border-gray-100">
+                            <th class="py-4 px-2 font-bold text-gray-400">등급</th>
+                            <th class="py-4 px-2 font-bold">의미</th>
+                            <th class="py-4 px-2 font-bold">한 줄 요약</th>
+                            <th class="py-4 px-2 font-bold">대표 상품</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="risk-6 hover:bg-gray-50 transition">
+                            <td class="py-4 px-2 font-bold">6등급</td>
+                            <td class="py-4 px-2">최저위험</td>
+                            <td class="py-4 px-2 italic">돈 지키기</td>
+                            <td class="py-4 px-2 text-sm text-gray-600">CMA, 단기채, 현금</td>
+                        </tr>
+                        <tr class="risk-5 hover:bg-gray-50 transition">
+                            <td class="py-4 px-2 font-bold text-blue-600">5등급</td>
+                            <td class="py-4 px-2">저위험</td>
+                            <td class="py-4 px-2 italic">투자 시작</td>
+                            <td class="py-4 px-2 text-sm text-gray-600">국채, 우량 회사채</td>
+                        </tr>
+                        <tr class="risk-4 hover:bg-gray-50 transition">
+                            <td class="py-4 px-2 font-bold text-emerald-600">4등급</td>
+                            <td class="py-4 px-2">중위험</td>
+                            <td class="py-4 px-2 italic">자산관리 핵심</td>
+                            <td class="py-4 px-2 text-sm text-gray-600">자산배분 ETF, 혼합형</td>
+                        </tr>
+                        <tr class="risk-3 hover:bg-gray-50 transition">
+                            <td class="py-4 px-2 font-bold text-yellow-600">3등급</td>
+                            <td class="py-4 px-2">중고위험</td>
+                            <td class="py-4 px-2 italic">자산 증식</td>
+                            <td class="py-4 px-2 text-sm text-gray-600">인덱스 주식형 ETF</td>
+                        </tr>
+                        <tr class="risk-2 hover:bg-gray-50 transition">
+                            <td class="py-4 px-2 font-bold text-orange-600">2등급</td>
+                            <td class="py-4 px-2">고위험</td>
+                            <td class="py-4 px-2 italic">집중 투자</td>
+                            <td class="py-4 px-2 text-sm text-gray-600">성장주, 섹터 ETF</td>
+                        </tr>
+                        <tr class="risk-1 hover:bg-gray-50 transition">
+                            <td class="py-4 px-2 font-bold text-red-600">1등급</td>
+                            <td class="py-4 px-2">초고위험</td>
+                            <td class="py-4 px-2 italic">투기적 접근</td>
+                            <td class="py-4 px-2 text-sm text-gray-600">개별주식, 코인, 레버리지</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Section 10: Standard Portfolio -->
+        <section class="card p-8 mb-8 bg-blue-50 border-2 border-blue-100">
+            <h2 class="text-2xl font-bold mb-4 text-blue-900">4등급: 가장 표준적인 투자 구조</h2>
+            <p class="mb-6 text-blue-800">초보자가 정착해야 할 <span class="font-bold">자산배분</span>의 핵심 구간입니다.</p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white p-4 rounded-lg shadow-sm text-center">
+                    <p class="text-xs text-gray-500 mb-1">주식</p>
+                    <p class="font-bold text-xl">25%</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-sm text-center">
+                    <p class="text-xs text-gray-500 mb-1">채권</p>
+                    <p class="font-bold text-xl">25%</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-sm text-center">
+                    <p class="text-xs text-gray-500 mb-1">금·원자재</p>
+                    <p class="font-bold text-xl">25%</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-sm text-center">
+                    <p class="text-xs text-gray-500 mb-1">달러·현금</p>
+                    <p class="font-bold text-xl">25%</p>
+                </div>
+            </div>
+            <p class="mt-6 font-bold text-center text-blue-900 italic">"투자를 잘한다의 기준은 오래 살아남는 것입니다."</p>
+        </section>
+
+        <!-- Conclusion -->
+        <section class="card p-8 text-center">
+            <h2 class="text-3xl font-bold mb-6">처음부터 수익을 내려고 하지 마세요</h2>
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <span class="bg-gray-100 px-4 py-2 rounded-full text-sm">자금 분리</span>
+                <i class="fas fa-chevron-right self-center text-gray-300"></i>
+                <span class="bg-gray-100 px-4 py-2 rounded-full text-sm">6→5등급 경험</span>
+                <i class="fas fa-chevron-right self-center text-gray-300"></i>
+                <span class="bg-blue-100 text-blue-600 px-4 py-2 rounded-full text-sm font-bold">4등급 정착</span>
+                <i class="fas fa-chevron-right self-center text-gray-300"></i>
+                <span class="bg-gray-100 px-4 py-2 rounded-full text-sm">3등급 시도</span>
+            </div>
+            <div class="border-t pt-8">
+                <h3 class="text-xl font-bold mb-4 italic">"투자는 기술이 아니라 <span class="text-blue-600">구조</span>입니다"</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    수익보다 먼저 버틸 수 있는 구조를 만드세요.<br>
+                    구조가 만들어지면, 수익은 자연스럽게 따라옵니다.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-12 text-center text-gray-400 text-sm px-6">
+        <p>© 2024 Investment Basics Guide. All rights reserved.</p>
+        <p class="mt-2">이 자료는 투자 권유가 아닌 교육을 목적으로 제작되었습니다.</p>
+    </footer>
+
+</body>
+</html>
