@@ -3,835 +3,375 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>가치투자 카드뉴스 (ETF 예시 포함) - 원페이지 스크롤</title>
+  <title>가치투자 완벽 가이드</title>
   <style>
-    :root{
-      --bg:#0b1220;
-      --panel:#0f1a30;
-      --panel2:#0d1730;
-      --line:rgba(255,255,255,.10);
-      --txt:rgba(255,255,255,.92);
-      --sub:rgba(255,255,255,.72);
-      --muted:rgba(255,255,255,.55);
-      --accent:#38bdf8;  /* sky */
-      --good:#22c55e;    /* green */
-      --warn:#fbbf24;    /* amber */
-      --shadow: 0 22px 60px rgba(0,0,0,.45);
-      --radius: 22px;
-      --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", Arial, sans-serif;
+    :root {
+      --primary: #2563eb;
+      --primary-soft: #eff6ff;
+      --accent: #3b82f6;
+      --bg: #ffffff;
+      --surface: #f8fafc;
+      --line: #e2e8f0;
+      --txt-main: #0f172a;
+      --txt-sub: #475569;
+      --txt-muted: #94a3b8;
+      --success: #10b981;
+      --font: "Pretendard", ui-sans-serif, system-ui, -apple-system, sans-serif;
     }
 
-    /* Light theme */
-    [data-theme="light"]{
-      --bg:#f6f8fc;
-      --panel:#ffffff;
-      --panel2:#f2f6ff;
-      --line:rgba(15,23,42,.10);
-      --txt:rgba(15,23,42,.92);
-      --sub:rgba(15,23,42,.72);
-      --muted:rgba(15,23,42,.55);
-      --shadow: 0 20px 40px rgba(2,6,23,.10);
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background-color: var(--bg);
+      color: var(--txt-main);
+      line-height: 1.7;
     }
 
-    *{box-sizing:border-box}
-    html{ scroll-behavior:smooth; }
-    body{
-      margin:0;
-      font-family:var(--font);
-      background: radial-gradient(1100px 600px at 20% -10%, rgba(56,189,248,.18), transparent 60%),
-                  radial-gradient(900px 500px at 100% 0%, rgba(34,197,94,.14), transparent 55%),
-                  var(--bg);
-      color:var(--txt);
-      min-height:100vh;
-    }
-
-    /* Layout */
-    .wrap{
-      width:min(1100px, 100%);
-      margin:0 auto;
-      padding:22px 18px 90px;
-    }
-
-    /* Sticky header */
-    .topbar{
-      position:sticky;
-      top:0;
-      z-index:30;
+    /* Header & Nav */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.8);
       backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      background: linear-gradient(180deg, rgba(11,18,32,.88), rgba(11,18,32,.55));
-      border-bottom:1px solid rgba(255,255,255,.08);
-      margin:0 -18px 18px;
-      padding:14px 18px;
+      border-bottom: 1px solid var(--line);
+      z-index: 100;
     }
-    [data-theme="light"] .topbar{
-      background: linear-gradient(180deg, rgba(246,248,252,.92), rgba(246,248,252,.70));
-      border-bottom:1px solid rgba(15,23,42,.10);
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-weight: 900;
+      font-size: 1.2rem;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    nav {
+      display: flex;
+      gap: 24px;
+    }
+    nav a {
+      text-decoration: none;
+      color: var(--txt-sub);
+      font-size: 14px;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--primary); }
+
+    /* Hero Section */
+    .hero {
+      padding: 160px 20px 100px;
+      text-align: center;
+      background: radial-gradient(circle at 50% 0%, #f0f7ff 0%, #ffffff 70%);
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      margin-bottom: 24px;
+      line-height: 1.1;
+    }
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--txt-sub);
+      max-width: 700px;
+      margin: 0 auto;
     }
 
-    .topbar-inner{
-      display:flex;
-      gap:12px;
-      align-items:center;
-      justify-content:space-between;
-      width:min(1100px, 100%);
-      margin:0 auto;
+    /* Main Content Layout */
+    .section-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 100px 20px;
     }
 
-    .brand{
-      display:flex;
-      flex-direction:column;
-      gap:3px;
-    }
-    .brand .title{
-      font-weight:900;
-      letter-spacing:-0.02em;
-      font-size:16px;
-      line-height:1.2;
-    }
-    .brand .meta{
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.2;
+    .grid-layout {
+      display: grid;
+      grid-template-columns: 1fr 350px;
+      gap: 80px;
+      align-items: start;
     }
 
-    .actions{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
+    @media (max-width: 900px) {
+      .grid-layout { grid-template-columns: 1fr; gap: 40px; }
+      .section-wrap { padding: 60px 20px; }
     }
 
-    .btn{
-      border:1px solid rgba(255,255,255,.10);
-      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
-      color:var(--txt);
-      padding:10px 12px;
-      border-radius:14px;
-      cursor:pointer;
-      box-shadow:0 10px 24px rgba(0,0,0,.12);
-      transition:transform .12s ease, background .12s ease, opacity .12s ease;
-      font-weight:800;
-      font-size:13px;
-      user-select:none;
-      white-space:nowrap;
-    }
-    [data-theme="light"] .btn{
-      border:1px solid rgba(15,23,42,.12);
-      background:linear-gradient(180deg, rgba(2,6,23,.03), rgba(2,6,23,.01));
-      box-shadow:0 12px 22px rgba(2,6,23,.08);
-    }
-    .btn:hover{ transform: translateY(-1px); }
-    .btn:active{ transform: translateY(0px) scale(.99); }
-
-    /* Anchor navigation */
-    .navlinks{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:flex-end;
-    }
-    .alink{
-      text-decoration:none;
-      color:var(--sub);
-      font-weight:800;
-      font-size:12px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.04);
-      padding:8px 10px;
-      border-radius:999px;
-      transition:transform .12s ease, opacity .12s ease;
-    }
-    [data-theme="light"] .alink{
-      border:1px solid rgba(15,23,42,.10);
-      background:rgba(2,6,23,.02);
-    }
-    .alink:hover{ transform: translateY(-1px); opacity:.95; }
-    .alink.active{
-      color:var(--txt);
-      border-color: rgba(56,189,248,.40);
-      box-shadow: 0 0 0 6px rgba(56,189,248,.10);
+    /* Section Elements */
+    .label {
+      display: inline-block;
+      color: var(--primary);
+      background: var(--primary-soft);
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 13px;
+      margin-bottom: 20px;
     }
 
-    /* Sections (pages) */
-    .page{
-      scroll-margin-top: 96px; /* sticky header offset */
-      margin-top:18px;
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-    }
-    [data-theme="light"] .page{
-      background:linear-gradient(180deg, rgba(2,6,23,.03), rgba(2,6,23,.01));
+    h2 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin: 0 0 24px;
+      letter-spacing: -0.02em;
     }
 
-    .page-head{
-      padding:16px 18px;
-      border-bottom:1px solid var(--line);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-    }
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      font-weight:900;
-      font-size:12px;
-      color:var(--sub);
-      letter-spacing:.02em;
-    }
-    .dot{
-      width:10px; height:10px; border-radius:99px;
-      background:var(--accent);
-      box-shadow:0 0 0 6px rgba(56,189,248,.16);
-    }
-    .copyPage{
-      font-size:12px;
-      padding:8px 10px;
-      border-radius:12px;
+    .lead-text {
+      font-size: 1.15rem;
+      color: var(--txt-sub);
+      margin-bottom: 32px;
     }
 
-    .page-body{
-      padding:18px;
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:16px;
+    .feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 40px;
     }
-    @media (max-width: 860px){
-      .page-body{ grid-template-columns:1fr; }
+    .feature-list li {
+      padding: 12px 0 12px 32px;
+      position: relative;
+      border-bottom: 1px solid var(--line);
+      font-weight: 500;
     }
-
-    .card{
-      border:1px solid var(--line);
-      border-radius:20px;
-      background:rgba(255,255,255,.03);
-      padding:18px 18px 16px;
-    }
-    [data-theme="light"] .card{
-      background:rgba(2,6,23,.02);
-    }
-
-    h1{
-      margin:10px 0 10px;
-      font-size:32px;
-      letter-spacing:-0.03em;
-      line-height:1.15;
-    }
-    .lead{
-      margin:0 0 14px;
-      color:var(--sub);
-      font-size:15px;
-      line-height:1.55;
+    .feature-list li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-weight: 900;
     }
 
-    .bullets{
-      margin:0;
-      padding-left:18px;
-      color:var(--txt);
-      line-height:1.7;
-      font-size:14px;
+    /* Sidebar Boxes */
+    .side-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 30px;
+      position: sticky;
+      top: 100px;
     }
-    .bullets li{ margin:6px 0; }
-    .muted{ color:var(--muted); }
-
-    .box{
-      border:1px dashed rgba(56,189,248,.35);
-      background: rgba(56,189,248,.10);
-      border-radius:18px;
-      padding:14px;
-      margin-top:14px;
-    }
-    [data-theme="light"] .box{ background: rgba(56,189,248,.08); }
-    .box h3{
-      margin:0 0 8px;
-      font-size:13px;
-      letter-spacing:-0.01em;
-      display:flex;
-      align-items:center;
-      gap:8px;
+    .side-card h3 {
+      margin: 0 0 20px;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    .etf{
-      display:grid;
-      gap:10px;
-      margin-top:10px;
+    .pill-item {
+      background: white;
+      border: 1px solid var(--line);
+      padding: 16px;
+      border-radius: 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
-    .etf-item{
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:12px;
-      background:rgba(255,255,255,.03);
+    .pill-item strong { display: block; margin-bottom: 4px; font-size: 15px; }
+    .pill-item span { font-size: 13px; color: var(--txt-sub); display: block; line-height: 1.4; }
+
+    /* Quote Box */
+    .quote-box {
+      background: var(--txt-main);
+      color: white;
+      padding: 30px;
+      border-radius: 20px;
+      margin-top: 24px;
     }
-    [data-theme="light"] .etf-item{ background:rgba(2,6,23,.02); }
-    .etf-item .name{
-      font-weight:900;
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      align-items:center;
-      margin-bottom:4px;
+    .quote-box p { margin: 0; font-weight: 700; font-size: 1.1rem; line-height: 1.5; }
+    .quote-box span { display: block; margin-top: 12px; font-size: 13px; opacity: 0.7; }
+
+    /* Footer */
+    footer {
+      background: var(--surface);
+      padding: 60px 20px;
+      text-align: center;
+      border-top: 1px solid var(--line);
     }
-    .pill{
-      font-size:11px;
-      font-weight:900;
-      padding:4px 8px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      color:var(--muted);
-      background:rgba(255,255,255,.04);
+    .disclaimer {
+      font-size: 12px;
+      color: var(--txt-muted);
+      max-width: 600px;
+      margin: 20px auto 0;
     }
 
-    .desc{
-      font-size:12.5px;
-      line-height:1.55;
-      color:var(--sub);
-      margin:0;
-    }
-
-    .side{
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-    }
-    .quote{
-      border:1px solid var(--line);
-      border-radius:20px;
-      padding:16px;
-      background:linear-gradient(180deg, rgba(34,197,94,.12), rgba(255,255,255,.02));
-    }
-    .quote .q{
-      font-size:15px;
-      line-height:1.6;
-      margin:0;
-      font-weight:900;
-      letter-spacing:-0.02em;
-    }
-    .quote .a{
-      margin-top:10px;
-      color:var(--sub);
-      font-size:13px;
-      line-height:1.55;
-    }
-
-    .checklist{
-      border:1px solid var(--line);
-      border-radius:20px;
-      padding:16px;
-      background:linear-gradient(180deg, rgba(251,191,36,.10), rgba(255,255,255,.02));
-    }
-    .checklist h3{
-      margin:0 0 10px;
-      font-size:13px;
-      letter-spacing:-0.01em;
-      display:flex; align-items:center; gap:8px;
-    }
-    .checklist ul{
-      margin:0;
-      padding-left:18px;
-      color:var(--sub);
-      line-height:1.7;
-      font-size:13px;
-    }
-
-    .tag{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.05);
-      font-weight:900;
-      font-size:12px;
-      color:var(--sub);
-    }
-
-    .footnote{
-      margin-top:10px;
-      font-size:11px;
-      color:var(--muted);
-      line-height:1.5;
-    }
-
-    /* Scroll to top floating button */
-    .fab{
-      position:fixed;
-      right:16px;
-      bottom:16px;
-      z-index:50;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(15,26,48,.75);
-      color:var(--txt);
-      padding:12px 12px;
-      border-radius:16px;
-      cursor:pointer;
-      box-shadow:0 18px 40px rgba(0,0,0,.28);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      display:none;
-      font-weight:900;
-    }
-    [data-theme="light"] .fab{
-      border:1px solid rgba(15,23,42,.12);
-      background:rgba(255,255,255,.80);
-      box-shadow:0 18px 36px rgba(2,6,23,.12);
-    }
-    .fab.show{ display:block; }
-
-    /* Small print header spacing on mobile */
-    @media (max-width: 520px){
-      .topbar-inner{ align-items:flex-start; }
-      .actions{ justify-content:flex-start; }
+    /* Dividers */
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--line), transparent);
+      max-width: 1100px;
+      margin: 0 auto;
     }
   </style>
 </head>
+<body>
 
-<body data-theme="dark">
-  <!-- Sticky Header -->
-  <header class="topbar">
-    <div class="topbar-inner">
-      <div class="brand">
-        <div class="title">가치투자 카드뉴스 (ETF 예시 포함)</div>
-        <div class="meta">원페이지 스크롤 · 상단 링크로 섹션 이동 · 섹션별 “복사” 지원</div>
-      </div>
-
-      <div class="actions">
-        <button class="btn" id="themeBtn" aria-label="테마 전환">🌗 테마</button>
-        <div class="navlinks" id="navlinks" aria-label="섹션 이동">
-          <a class="alink" href="#p1">1</a>
-          <a class="alink" href="#p2">2</a>
-          <a class="alink" href="#p3">3</a>
-          <a class="alink" href="#p4">4</a>
-          <a class="alink" href="#p5">5</a>
-        </div>
-      </div>
+  <header>
+    <div class="nav-container">
+      <a href="#" class="logo">VALUE INVEST</a>
+      <nav>
+        <a href="#definition">정의</a>
+        <a href="#necessity">필요성</a>
+        <a href="#method">방법론</a>
+        <a href="#process">실행</a>
+        <a href="#conclusion">결론</a>
+      </nav>
     </div>
   </header>
 
-  <main class="wrap">
-    <!-- Page 1 -->
-    <section class="page" id="p1" data-page="1">
-      <div class="page-head">
-        <div class="badge"><span class="dot"></span> 1/5 · 정의</div>
-        <button class="btn copyPage" data-copy="1">📋 이 섹션 복사</button>
+  <section class="hero">
+    <h1>가치투자 완벽 가이드</h1>
+    <p>주가의 소음 속에서 기업의 진정한 가치를 발견하고<br>장기적 복리의 마법을 실현하는 투자의 본질</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Section 1: Definition -->
+  <section id="definition" class="section-wrap">
+    <div class="grid-layout">
+      <div class="main-content">
+        <span class="label">01. DEFINITION</span>
+        <h2>가치투자란 무엇인가?</h2>
+        <p class="lead-text">가치투자는 기업의 내재가치와 시장 가격 사이의 괴리를 이용하는 전략입니다. 단순히 싼 주식을 사는 것이 아니라, '훌륭한 기업을 적절한 가격에' 사는 것을 목표로 합니다.</p>
+        <ul class="feature-list">
+          <li><b>사업적 동반자:</b> 주식을 종잇조각이 아닌 기업의 소유권으로 인식</li>
+          <li><b>내재가치 측정:</b> 재무제표와 비즈니스 모델을 통한 가치 산출</li>
+          <li><b>안전마진 확보:</b> 가치보다 충분히 싼 가격에 매수하여 실수 방어</li>
+        </ul>
       </div>
-
-      <div class="page-body">
-        <div class="card">
-          <h1>가치투자란?</h1>
-          <p class="lead">
-            가치투자(Value Investing)는 <b>기업의 내재가치</b> 대비 <b>저평가</b>된 가격에서 매수하고,
-            <b>시간(보유기간)</b>을 아군으로 만드는 투자 방식입니다.
-          </p>
-          <ul class="bullets">
-            <li>단기 이슈가 아니라 <b>사업·재무·경쟁력</b>을 본다</li>
-            <li>핵심 KPI는 “좋은 기업을 <b>합리적인 가격</b>에 샀는가”</li>
-            <li class="muted">원칙: 손실 회피(리스크관리) → 장기 복리</li>
-          </ul>
-
-          <div class="box">
-            <h3>✅ ETF 예시 (가치·저평가 스타일)</h3>
-            <div class="etf">
-              <div class="etf-item">
-                <div class="name">VTV <span class="pill">미국</span> <span class="pill">대형가치</span></div>
-                <p class="desc">미국 대형주 중 가치(저평가) 성격이 강한 종목군에 분산 투자하는 대표 ETF 예시.</p>
-              </div>
-              <div class="etf-item">
-                <div class="name">IWD <span class="pill">미국</span> <span class="pill">Russell 1000 Value</span></div>
-                <p class="desc">대형 가치주 지수 기반의 분산 접근 예시(‘가치’ 프레임 이해용).</p>
-              </div>
-              <div class="etf-item">
-                <div class="name">국내 ‘가치/배당/퀄리티’ 스타일 ETF <span class="pill">한국</span></div>
-                <p class="desc">운용사별 라인업이 다양하므로 “가치/저평가/배당/퀄리티” 키워드로 검색해 후보를 구성(예시 범주).</p>
-              </div>
-            </div>
-            <div class="footnote">※ ETF는 “유형 예시”이며, 투자결정 전 운용보수·추종지수·환헤지·분배정책을 확인하세요.</div>
+      <aside class="side-content">
+        <div class="side-card">
+          <h3>📍 관련 스타일 ETF</h3>
+          <div class="pill-item">
+            <strong>VTV (Vanguard Value)</strong>
+            <span>미국 대형 가치주에 분산 투자하는 대표적 상품</span>
+          </div>
+          <div class="pill-item">
+            <strong>IWD (iShares Russell 1000)</strong>
+            <span>러셀 1000 가치 지수를 추종하는 포트폴리오</span>
           </div>
         </div>
+      </aside>
+    </div>
+  </section>
 
-        <aside class="side">
-          <div class="quote">
-            <p class="q">“주가가 아니라 기업을 산다.”</p>
-            <div class="a">
-              가치투자는 <b>가격</b>이 아니라 <b>가치</b>를 기준으로 판단 기준을 세우는 프레임입니다.
-              초보자일수록 ‘매수/매도 기준’이 생기는 효과가 큽니다.
-            </div>
-          </div>
+  <div class="divider"></div>
 
-          <div class="checklist">
-            <h3>🔎 초보자 체크포인트</h3>
-            <ul>
-              <li>내가 이 기업(혹은 ETF)이 뭘 담는지 설명 가능한가?</li>
-              <li>매수 이유가 뉴스가 아니라 지표/논리인가?</li>
-              <li>보유기간을 최소 3년으로 가정해도 괜찮은가?</li>
-            </ul>
-          </div>
-
-          <div class="card">
-            <span class="tag">업무용 키워드</span>
-            <p class="desc" style="margin-top:10px">
-              내재가치 · 안전마진(MoS) · 밸류에이션(PER/PBR) · 현금흐름(FCF) · ROE/ROIC · 리스크관리
-            </p>
-          </div>
-        </aside>
+  <!-- Section 2: Necessity -->
+  <section id="necessity" class="section-wrap" style="background: #fafcff;">
+    <div class="grid-layout">
+      <div class="main-content">
+        <span class="label">02. NECESSITY</span>
+        <h2>왜 가치투자가 필요한가</h2>
+        <p class="lead-text">변동성이 극심한 시장에서 가치투자는 투자자의 심리를 지켜주는 든든한 닻 역할을 합니다. 기준이 명확할 때 비로소 흔들림 없는 매매가 가능합니다.</p>
+        <ul class="feature-list">
+          <li><b>감정 매매 방지:</b> 공포와 탐욕이라는 인간의 본성을 원칙으로 통제</li>
+          <li><b>확률적 우위:</b> 타이밍을 맞추는 도박이 아닌, 이길 확률이 높은 게임 수행</li>
+          <li><b>지속 가능성:</b> 일시적인 유행이 아닌 수십 년간 검증된 정석 투자법</li>
+        </ul>
       </div>
-    </section>
+      <aside class="side-content">
+        <div class="quote-box">
+          <p>"주식 시장은 인내심 없는 사람의 돈을 인내심 있는 사람에게 옮기는 도구이다."</p>
+          <span>- 워런 버핏</span>
+        </div>
+      </aside>
+    </div>
+  </section>
 
-    <!-- Page 2 -->
-    <section class="page" id="p2" data-page="2">
-      <div class="page-head">
-        <div class="badge"><span class="dot"></span> 2/5 · 필요성</div>
-        <button class="btn copyPage" data-copy="2">📋 이 섹션 복사</button>
+  <div class="divider"></div>
+
+  <!-- Section 3: Method -->
+  <section id="method" class="section-wrap">
+    <div class="grid-layout">
+      <div class="main-content">
+        <span class="label">03. METHODOLOGY</span>
+        <h2>가치 분석의 3대 핵심축</h2>
+        <p class="lead-text">성공적인 가치를 발견하기 위해서는 숫자(재무)와 스토리(사업성)의 조화가 필수적입니다.</p>
+        <ul class="feature-list">
+          <li><b>재무 안정성:</b> 부채 비율, 현금 흐름, 이익의 지속성을 현미경 분석</li>
+          <li><b>경제적 해자:</b> 브랜드, 기술력, 네트워크 효과 등 강력한 경쟁 우위 확인</li>
+          <li><b>현금흐름 할인:</b> 미래에 벌어들일 현금을 현재 가치로 환산하여 비교</li>
+        </ul>
       </div>
-
-      <div class="page-body">
-        <div class="card">
-          <h1>왜 가치투자가 필요한가</h1>
-          <p class="lead">
-            초보자가 흔히 하는 실수는 “가격 변동”을 “가치 변동”으로 오해하는 것입니다.
-            가치투자는 <b>의사결정 기준(Decision Rule)</b>을 만들어 감정 매매를 줄여줍니다.
-          </p>
-          <ul class="bullets">
-            <li>📉 급락장: 공포 매도 방지(원칙 기반)</li>
-            <li>📈 급등장: 추격 매수 억제(밸류에이션 체크)</li>
-            <li>🧾 장기적으로: 복리의 핵심은 <b>지속 가능한 프로세스</b></li>
-          </ul>
-
-          <div class="box">
-            <h3>✅ ETF 예시 (변동성 속 ‘기준’ 확보용)</h3>
-            <div class="etf">
-              <div class="etf-item">
-                <div class="name">VIG <span class="pill">미국</span> <span class="pill">배당성장</span></div>
-                <p class="desc">배당을 꾸준히 늘려온 기업군에 분산(현금흐름 기반의 심리적 안정에 도움될 수 있는 예시).</p>
-              </div>
-              <div class="etf-item">
-                <div class="name">DGRO <span class="pill">미국</span> <span class="pill">배당성장</span></div>
-                <p class="desc">배당 성장 성격의 분산 포트폴리오 예시(‘원칙형 장기 보유’ 프레임).</p>
-              </div>
-              <div class="etf-item">
-                <div class="name">SCHD <span class="pill">미국</span> <span class="pill">배당·퀄리티</span></div>
-                <p class="desc">배당 중심+품질 필터 결합 예시(단, 추종지수 룰/분배정책 확인 필수).</p>
-              </div>
-            </div>
+      <aside class="side-content">
+        <div class="side-card">
+          <h3>🔍 분석 템플릿</h3>
+          <div class="pill-item">
+            <strong>질적 분석</strong>
+            <span>CEO의 역량, 산업의 성장성, 진입 장벽 점검</span>
+          </div>
+          <div class="pill-item">
+            <strong>양적 분석</strong>
+            <span>ROE, PER, PBR, 부채비율 5년 트렌드 확인</span>
           </div>
         </div>
+      </aside>
+    </div>
+  </section>
 
-        <aside class="side">
-          <div class="quote">
-            <p class="q">가치투자의 목표는 “예측”이 아니라 “확률”</p>
-            <div class="a">
-              시장 타이밍을 맞히기보다, <b>좋은 확률 게임</b>을 반복하는 접근입니다.
-              (매수 기준·리밸런싱 룰·리스크 한도)
-            </div>
-          </div>
+  <div class="divider"></div>
 
-          <div class="checklist">
-            <h3>🧯 리스크관리 관점</h3>
-            <ul>
-              <li>한 종목/한 섹터 쏠림 방지(분산)</li>
-              <li>밸류 트랩(구조적 악화) 경계</li>
-              <li>부채/현금흐름/이익의 “지속성” 확인</li>
-            </ul>
-          </div>
-
-          <div class="card">
-            <span class="tag">실무 팁</span>
-            <p class="desc" style="margin-top:10px">
-              “투자 논리 1장(메모)”을 남기면, 하락장에서 판단 품질이 올라갑니다.
-              (매수 이유 · 리스크 · 점검/매도 트리거)
-            </p>
-          </div>
-        </aside>
+  <!-- Section 4: Process -->
+  <section id="process" class="section-wrap" style="background: #fdfdfd;">
+    <div class="grid-layout">
+      <div class="main-content">
+        <span class="label">04. EXECUTION</span>
+        <h2>실행 프로세스와 운영</h2>
+        <p class="lead-text">분석보다 중요한 것은 실행입니다. 개별 종목이 부담스러운 초보자라면 가치 팩터 ETF를 활용한 시스템 구축이 유리합니다.</p>
+        <ul class="feature-list">
+          <li><b>코어-위성 전략:</b> 전체의 70%는 지수, 30%는 가치주로 구성</li>
+          <li><b>정기적 리밸런싱:</b> 가격이 가치에 도달하면 매도하고 새로운 기회로 이동</li>
+          <li><b>분할 적립 매수:</b> 평균 단가를 관리하며 시간적 리스크를 분산</li>
+        </ul>
       </div>
-    </section>
-
-    <!-- Page 3 -->
-    <section class="page" id="p3" data-page="3">
-      <div class="page-head">
-        <div class="badge"><span class="dot"></span> 3/5 · 방법(프레임)</div>
-        <button class="btn copyPage" data-copy="3">📋 이 섹션 복사</button>
-      </div>
-
-      <div class="page-body">
-        <div class="card">
-          <h1>가치투자 방법 3축</h1>
-          <p class="lead">
-            가치투자는 “좋은 기업”과 “합리적인 가격”을 동시에 봅니다.
-            아래 3축으로 정리하면 학습 곡선이 빠릅니다.
-          </p>
-          <ul class="bullets">
-            <li><b>재무 안정성</b>: 부채 과다 여부, 현금흐름, 이익의 일관성</li>
-            <li><b>사업 이해도</b>: 무엇으로 돈을 버는가, 경쟁우위(해자)가 있는가</li>
-            <li><b>가격 대비 가치</b>: PER/PBR/FCF로 “비싼 이유/싼 이유” 설명</li>
-          </ul>
-
-          <div class="box">
-            <h3>✅ ETF 예시 (퀄리티·밸류 팩터 접근)</h3>
-            <div class="etf">
-              <div class="etf-item">
-                <div class="name">QUAL <span class="pill">미국</span> <span class="pill">퀄리티</span></div>
-                <p class="desc">재무/수익성 품질을 강조하는 팩터형 접근 예시(가치 프레임 보완).</p>
-              </div>
-              <div class="etf-item">
-                <div class="name">USMV <span class="pill">미국</span> <span class="pill">저변동</span></div>
-                <p class="desc">변동성 축소 지향 접근 예시(리스크 허용도 관리 관점에서 참고).</p>
-              </div>
-              <div class="etf-item">
-                <div class="name">국내 ‘퀄리티/밸류/저변동’ 스타일 ETF <span class="pill">한국</span></div>
-                <p class="desc">팩터 키워드로 스크리닝(추종지수 룰·편입 기준·리밸런싱 주기 확인).</p>
-              </div>
-            </div>
-          </div>
+      <aside class="side-content">
+        <div class="side-card" style="background: #fff8f1; border-color: #ffe8d1;">
+          <h3 style="color: #ea580c;">⚠️ 운영 주의사항</h3>
+          <div class="pill-item"><span>월배당 수익률에만 매몰되지 말고, 기업의 이익 성장을 함께 보십시오.</span></div>
+          <div class="pill-item"><span>'가치 함정'에 빠지지 않도록 구조적 사양 산업은 경계하십시오.</span></div>
         </div>
+      </aside>
+    </div>
+  </section>
 
-        <aside class="side">
-          <div class="quote">
-            <p class="q">“싸게 보이는 것”과 “진짜 싼 것”은 다릅니다.</p>
-            <div class="a">
-              PER/PBR만 보지 말고, <b>현금흐름</b>과 <b>사업 구조</b>를 함께 보세요.
-              (특히 부채·마진·수요 구조 변화)
-            </div>
-          </div>
+  <div class="divider"></div>
 
-          <div class="checklist">
-            <h3>📌 최소 분석 템플릿</h3>
-            <ul>
-              <li>매출/영업이익: 5년 추세</li>
-              <li>부채/이자보상: 안전성</li>
-              <li>FCF: “버는 돈의 질”</li>
-              <li>밸류에이션: 동종 대비 프리미엄/디스카운트 이유</li>
-            </ul>
-          </div>
-
-          <div class="card">
-            <span class="tag">용어</span>
-            <p class="desc" style="margin-top:10px">
-              <b>안전마진(Margin of Safety)</b> = 내재가치 대비 싸게 사서 실수 여지를 확보하는 개념
-            </p>
-          </div>
-        </aside>
+  <!-- Section 5: Conclusion -->
+  <section id="conclusion" class="section-wrap">
+    <div class="grid-layout">
+      <div class="main-content">
+        <span class="label">05. CONCLUSION</span>
+        <h2>투자는 삶을 풍요롭게 하는 여정</h2>
+        <p class="lead-text">가치투자는 단순히 계좌의 숫자를 늘리는 기술을 넘어, 세상을 합리적으로 관찰하는 지혜를 줍니다.</p>
+        <ul class="feature-list">
+          <li><b>단기 성과에 일희일비하지 않는 태도</b></li>
+          <li><b>자산과 함께 성장하는 인내의 가치</b></li>
+          <li><b>나만의 투자 철학을 완성해가는 과정</b></li>
+        </ul>
       </div>
-    </section>
-
-    <!-- Page 4 -->
-    <section class="page" id="p4" data-page="4">
-      <div class="page-head">
-        <div class="badge"><span class="dot"></span> 4/5 · 실행 프로세스</div>
-        <button class="btn copyPage" data-copy="4">📋 이 섹션 복사</button>
-      </div>
-
-      <div class="page-body">
-        <div class="card">
-          <h1>초보자용 실행 프로세스</h1>
-          <p class="lead">
-            개별 종목 분석이 부담되면, <b>ETF로 프로세스를 먼저 구축</b>하는 것이 효율적입니다.
-            핵심은 “규칙 기반 운영”입니다.
-          </p>
-
-          <ul class="bullets">
-            <li><b>1) 코어-위성</b>: 코어(시장) + 위성(가치/배당/퀄리티)</li>
-            <li><b>2) 적립식</b>: 타이밍 리스크 감소, 평균 단가 관리</li>
-            <li><b>3) 리밸런싱</b>: 연 1~2회 또는 비중 이탈 시 자동 조정</li>
-          </ul>
-
-          <div class="box">
-            <h3>✅ ETF 예시 (운영 구조 예시)</h3>
-            <div class="etf">
-              <div class="etf-item">
-                <div class="name">VOO / IVV <span class="pill">미국</span> <span class="pill">시장 코어</span></div>
-                <p class="desc">시장 전체에 폭넓게 분산하는 코어 예시(가치/배당 위성의 기준점).</p>
-              </div>
-              <div class="etf-item">
-                <div class="name">VTV + VIG/DGRO (또는 SCHD) <span class="pill">미국</span> <span class="pill">가치·현금흐름 위성</span></div>
-                <p class="desc">가치/배당성장 성격을 위성으로 조합하는 예시(중복 편입 여부 점검 권장).</p>
-              </div>
-              <div class="etf-item">
-                <div class="name">국내 상장 ETF로 유사 구조 구성 <span class="pill">한국</span></div>
-                <p class="desc">환전/세금/계좌 전략에 맞춰 국내 상장 ETF로 실행 단순화 가능(상품별 구조 확인).</p>
-              </div>
-            </div>
-            <div class="footnote">
-              체크리스트: 운용보수 · 추종지수 룰 · 분배정책(월/분기/반기) · 환헤지 · 과세 체계
-            </div>
-          </div>
+      <aside class="side-content">
+        <div class="quote-box" style="background: var(--primary);">
+          <p>"투자는 가장 먼저 자신에게 투자하는 것에서 시작됩니다."</p>
         </div>
+      </aside>
+    </div>
+  </section>
 
-        <aside class="side">
-          <div class="quote">
-            <p class="q">프로세스가 있으면 계좌가 흔들려도 행동은 흔들리지 않습니다.</p>
-            <div class="a">
-              초보자에게 중요한 역량은 ‘종목 발굴’보다 <b>운영 역량(리밸런싱/리스크 한도)</b>입니다.
-            </div>
-          </div>
+  <footer>
+    <div class="nav-container" style="flex-direction: column; gap: 20px;">
+      <a href="#" class="logo">VALUE INVEST</a>
+      <p style="color: var(--txt-sub); font-size: 14px;">© 2024 가치투자 완벽 가이드. All rights reserved.</p>
+      <p class="disclaimer">본 페이지의 내용은 정보 제공을 목적으로 하며, 특정 금융상품의 매수 또는 매도를 권유하지 않습니다. 모든 투자 결정에 대한 책임은 투자자 본인에게 있습니다.</p>
+    </div>
+  </footer>
 
-          <div class="checklist">
-            <h3>🧩 추천 운영 룰(예시)</h3>
-            <ul>
-              <li>월 1회 정기 매수(급등/급락 무시)</li>
-              <li>연 1~2회 리밸런싱(±5%p 이탈 시 조정)</li>
-              <li>한 ETF 비중 상한(예: 30~40%) 설정</li>
-            </ul>
-          </div>
-
-          <div class="card">
-            <span class="tag">주의</span>
-            <p class="desc" style="margin-top:10px">
-              ‘월배당’만 보고 선택하면 밸류에이션/구성 리스크를 놓치기 쉽습니다.
-              분배율보다 <b>총수익(Price+Distribution)</b> 관점으로 점검하세요.
-            </p>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-    <!-- Page 5 -->
-    <section class="page" id="p5" data-page="5">
-      <div class="page-head">
-        <div class="badge"><span class="dot"></span> 5/5 · 결론</div>
-        <button class="btn copyPage" data-copy="5">📋 이 섹션 복사</button>
-      </div>
-
-      <div class="page-body">
-        <div class="card">
-          <h1>가치투자를 추천하는 이유</h1>
-          <p class="lead">
-            가치투자는 단기 성과를 “맞히는 게임”이 아니라, 장기적으로 <b>승률을 높이는 운영 시스템</b>입니다.
-          </p>
-
-          <ul class="bullets">
-            <li><b>예측</b>보다 <b>원칙</b></li>
-            <li><b>타이밍</b>보다 <b>반복 가능한 프로세스</b></li>
-            <li><b>큰 한 방</b>보다 <b>실수 최소화(리스크관리)</b></li>
-          </ul>
-
-          <div class="box">
-            <h3>✅ ETF 예시 (학습·운영 바스켓 예시)</h3>
-            <div class="etf">
-              <div class="etf-item">
-                <div class="name">코어: VOO/IVV(시장) <span class="pill">기준점</span></div>
-                <p class="desc">시장 수익률을 기준으로 내 전략이 과도하게 벗어나지 않게 관리.</p>
-              </div>
-              <div class="etf-item">
-                <div class="name">위성: VTV(가치) + VIG/DGRO(배당성장) <span class="pill">프레임 학습</span></div>
-                <p class="desc">가치/현금흐름/품질을 체계적으로 이해하는 데 도움이 되는 구성 예시.</p>
-              </div>
-              <div class="etf-item">
-                <div class="name">국내 대체: 국내 상장 S&P500/배당/가치 스타일 ETF <span class="pill">실행 편의</span></div>
-                <p class="desc">환전/세금/계좌(ISA·연금) 전략에 맞춰 국내 상장으로 실행 단순화 가능.</p>
-              </div>
-            </div>
-            <div class="footnote">
-              본 자료는 교육용 요약이며 투자 권유가 아닙니다. 실제 편입 전에는 상품설명서/투자설명서, 추종지수 룰, 과세, 분배 정책을 확인하세요.
-            </div>
-          </div>
-        </div>
-
-        <aside class="side">
-          <div class="quote">
-            <p class="q">“가치투자는 느리지만, 멀리 갑니다.”</p>
-            <div class="a">
-              투자 초보자의 핵심 리스크는 정보 부족보다 <b>감정 기반 의사결정</b>입니다.
-              가치투자는 그 리스크를 구조적으로 낮춥니다.
-            </div>
-          </div>
-
-          <div class="checklist">
-            <h3>🚀 다음 액션(바로 실행)</h3>
-            <ul>
-              <li>내 계좌 목적 정의: 현금흐름 vs 성장 vs 혼합</li>
-              <li>코어 1개 + 위성 1~2개로 시작</li>
-              <li>리밸런싱 날짜 캘린더에 고정</li>
-            </ul>
-          </div>
-
-          <div class="card">
-            <span class="tag">확장 제작 옵션</span>
-            <p class="desc" style="margin-top:10px">
-              ① 국내 상장 ETF “실제 티커”로 교체한 버전<br/>
-              ② ISA/연금(IRP/DC) 과세·운영 룰 포함 버전<br/>
-              ③ 인스타 규격(1080×1350) CSS 최적화 버전
-            </p>
-          </div>
-        </aside>
-      </div>
-    </section>
-  </main>
-
-  <button class="fab" id="topBtn" aria-label="맨 위로"⬆︎ TOP</button>
-
-  <script>
-    const themeBtn = document.getElementById('themeBtn');
-    const topBtn = document.getElementById('topBtn');
-    const nav = document.getElementById('navlinks');
-    const links = Array.from(nav.querySelectorAll('a.alink'));
-    const sections = links.map(a => document.querySelector(a.getAttribute('href')));
-    const copyBtns = Array.from(document.querySelectorAll('.copyPage'));
-
-    themeBtn.addEventListener('click', ()=>{
-      const body = document.body;
-      const cur = body.getAttribute('data-theme') || 'dark';
-      body.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
-    });
-
-    // Top button show/hide + action
-    window.addEventListener('scroll', ()=>{
-      if(window.scrollY > 500) topBtn.classList.add('show');
-      else topBtn.classList.remove('show');
-    });
-    topBtn.addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
-
-    // Active nav highlight (IntersectionObserver)
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach(entry=>{
-        if(entry.isIntersecting){
-          const id = entry.target.id;
-          links.forEach(a=>{
-            a.classList.toggle('active', a.getAttribute('href') === `#${id}`);
-          });
-        }
-      });
-    }, { root:null, rootMargin:'-45% 0px -50% 0px', threshold:0.01 });
-
-    sections.forEach(sec => sec && io.observe(sec));
-
-    // Copy section text
-    copyBtns.forEach(btn=>{
-      btn.addEventListener('click', async ()=>{
-        const n = btn.dataset.copy;
-        const sec = document.querySelector(`section.page[data-page="${n}"]`);
-        if(!sec) return;
-
-        const title = sec.querySelector('h1')?.innerText?.trim() || '';
-        const lead  = sec.querySelector('.lead')?.innerText?.trim() || '';
-        const bullets = Array.from(sec.querySelectorAll('.bullets li')).map(li => "• " + li.innerText.trim());
-        const etfs = Array.from(sec.querySelectorAll('.etf-item .name')).map(el => "- " + el.innerText.trim());
-
-        const text = [
-          `[${n}/5] ${title}`,
-          lead,
-          "",
-          ...bullets,
-          "",
-          "ETF 예시:",
-          ...etfs
-        ].join("\n");
-
-        try{
-          await navigator.clipboard.writeText(text);
-          const old = btn.textContent;
-          btn.textContent = "✅ 복사됨";
-          setTimeout(()=>btn.textContent = old, 1200);
-        }catch(e){
-          alert("클립보드 접근이 차단되어 복사에 실패했습니다. 브라우저 권한을 확인하세요.");
-        }
-      });
-    });
-  </script>
 </body>
 </html>
