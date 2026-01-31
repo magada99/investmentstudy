@@ -5,16 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>채권 투자 마스터 클래스: 스마트한 자산관리</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -35,12 +31,6 @@
             margin-left: auto;
             margin-right: auto;
             height: 300px;
-            max-height: 400px;
-        }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 350px;
-            }
         }
 
         .perspective-1000 {
@@ -56,16 +46,24 @@
             transform: rotateY(180deg);
         }
 
-        .nav-link.active {
-            color: #2563eb;
-            border-bottom: 2px solid #2563eb;
-            font-weight: 700;
+        /* Badge Styles */
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-pass { background-color: #fef08a; color: #854d0e; }
+        .badge-caution { background-color: #ffedd5; color: #9a3412; }
+        .badge-fail { background-color: #fee2e2; color: #991b1b; }
+
+        .table-container {
+            overflow-x: auto;
         }
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- Navigation -->
     <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur shadow-sm border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
@@ -73,81 +71,72 @@
                     <i class="fa-solid fa-chart-line text-blue-600 text-2xl"></i>
                     <span class="font-bold text-xl text-slate-800">BondMaster</span>
                 </div>
-                <div class="hidden md:flex space-x-8">
-                    <button onclick="scrollToSection('basics')" class="nav-link text-slate-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">채권 기초</button>
-                    <button onclick="scrollToSection('savings')" class="nav-link text-slate-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">예적금 vs 채권</button>
-                    <!-- 변경: 채권 vs 배당 -> 핵심-위성 -->
-                    <button onclick="scrollToSection('core-satellite')" class="nav-link text-slate-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">핵심-위성</button>
-                    <button onclick="scrollToSection('strategy')" class="nav-link text-slate-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">실전 전략</button>
+                <div class="hidden md:flex space-x-6">
+                    <button onclick="scrollToSection('basics')" class="text-slate-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">기초</button>
+                    <button onclick="scrollToSection('savings')" class="text-slate-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">예금vs채권</button>
+                    <button onclick="scrollToSection('core-satellite')" class="text-slate-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">포트폴리오</button>
+                    <button onclick="scrollToSection('practical')" class="text-slate-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">실전가이드</button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <header class="bg-gradient-to-r from-slate-900 to-slate-800 text-white py-16 lg:py-24">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 class="text-3xl md:text-5xl font-extrabold mb-6 tracking-tight">
+            <h1 class="text-3xl md:text-5xl font-extrabold mb-6 tracking-tight leading-tight">
                 수익률을 확정하고<br><span class="text-blue-400">변동성을 줄이는</span> 스마트한 투자
             </h1>
             <p class="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto mb-10">
-                예금보험공사가 기금을 운용하는 방식, 궁금하지 않으신가요?<br>
-                가장 안전한 기관이 선택한 '채권'의 힘을 직접 확인해 보세요.
+                가장 안전한 기관인 예금보험공사가 선택한 '채권'의 힘.<br>
+                데이터로 증명된 신용 등급별 전략을 지금 확인하세요.
             </p>
-            <button onclick="scrollToSection('savings')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition hover:scale-105 duration-200">
-                운용 데이터 확인하기 <i class="fa-solid fa-arrow-right ml-2"></i>
+            <button onclick="scrollToSection('practical')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition hover:scale-105 duration-200">
+                실전 투자 리스트 보기 <i class="fa-solid fa-chevron-down ml-2"></i>
             </button>
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24">
 
-        <!-- SECTION 1: BASICS -->
         <section id="basics" class="scroll-mt-24">
             <div class="text-center mb-12">
                 <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide">Chapter 1</span>
                 <h2 class="text-3xl font-bold text-slate-900 mt-2">채권(Bond) 핵심 용어</h2>
-                <p class="mt-4 text-slate-600 max-w-2xl mx-auto">카드를 클릭하여 상세 내용을 확인하세요.</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Issuer -->
                 <div class="group h-64 perspective-1000 cursor-pointer" onclick="this.classList.toggle('flipped')">
                     <div class="relative w-full h-full text-center transition-transform duration-500 transform-style-3d group-[.flipped]:rotate-y-180 shadow-md rounded-xl">
                         <div class="absolute w-full h-full bg-white rounded-xl backface-hidden flex flex-col items-center justify-center p-6 border border-slate-200">
                             <i class="fa-solid fa-building-columns text-blue-600 text-2xl mb-4"></i>
                             <h3 class="text-xl font-bold text-slate-800">발행자</h3>
-                            <p class="mt-4 text-slate-600 max-w-2xl mx-auto">국가, 은행, 기업 등 자금을 빌리는 주체입니다.</p>
+                            <p class="mt-4 text-sm text-slate-600">국가, 은행, 기업 등 자금을 빌리는 주체입니다.</p>
                         </div>
                     </div>
                 </div>
-                <!-- Coupon -->
                 <div class="group h-64 perspective-1000 cursor-pointer" onclick="this.classList.toggle('flipped')">
                     <div class="relative w-full h-full text-center transition-transform duration-500 transform-style-3d group-[.flipped]:rotate-y-180 shadow-md rounded-xl">
                         <div class="absolute w-full h-full bg-white rounded-xl backface-hidden flex flex-col items-center justify-center p-6 border border-slate-200">
                             <i class="fa-solid fa-hand-holding-dollar text-emerald-600 text-2xl mb-4"></i>
                             <h3 class="text-xl font-bold text-slate-800">표면금리</h3>
-                            <p class="mt-4 text-slate-600 max-w-2xl mx-auto">보유 기간 동안 정기적으로 지급받는 이자율입니다.</p>
+                            <p class="mt-4 text-sm text-slate-600">보유 기간 동안 정기적으로 지급받는 이자율입니다.</p>
                         </div>
                     </div>
                 </div>
-                <!-- Maturity -->
                 <div class="group h-64 perspective-1000 cursor-pointer" onclick="this.classList.toggle('flipped')">
                     <div class="relative w-full h-full text-center transition-transform duration-500 transform-style-3d group-[.flipped]:rotate-y-180 shadow-md rounded-xl">
                         <div class="absolute w-full h-full bg-white rounded-xl backface-hidden flex flex-col items-center justify-center p-6 border border-slate-200">
                             <i class="fa-solid fa-hourglass-end text-amber-600 text-2xl mb-4"></i>
                             <h3 class="text-xl font-bold text-slate-800">만기</h3>
-                            <p class="mt-4 text-slate-600 max-w-2xl mx-auto">원금을 돌려받는 약속된 날짜입니다.</p>
+                            <p class="mt-4 text-sm text-slate-600">원금을 돌려받는 약속된 날짜입니다.</p>
                         </div>
                     </div>
                 </div>
-                <!-- Yield -->
                 <div class="group h-64 perspective-1000 cursor-pointer" onclick="this.classList.toggle('flipped')">
                     <div class="relative w-full h-full text-center transition-transform duration-500 transform-style-3d group-[.flipped]:rotate-y-180 shadow-md rounded-xl">
                         <div class="absolute w-full h-full bg-white rounded-xl backface-hidden flex flex-col items-center justify-center p-6 border border-slate-200">
                             <i class="fa-solid fa-percent text-purple-600 text-2xl mb-4"></i>
                             <h3 class="text-xl font-bold text-slate-800">수익률</h3>
-                            <p class="mt-4 text-slate-600 max-w-2xl mx-auto">이자수익에 매매차익까지 합산한 최종 성적표입니다.</p>
+                            <p class="mt-4 text-sm text-slate-600">이자수익에 매매차익까지 합산한 최종 성적표입니다.</p>
                         </div>
                     </div>
                 </div>
@@ -276,27 +265,174 @@
             </div>
         </section>
 
-        <!-- SECTION 4: STRATEGY -->
-        <section id="strategy" class="scroll-mt-24">
-            <div class="text-center mb-12">
-                <span class="bg-purple-100 text-purple-800 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide">Final Step</span>
-                <h2 class="text-3xl font-bold text-slate-900 mt-2">투자 3단계 가이드</h2>
-            </div>
-            <div class="overflow-x-auto bg-white rounded-xl shadow-sm border border-slate-100">
-                <table class="w-full text-left">
-                    <thead class="bg-slate-800 text-white">
-                        <tr>
-                            <th class="p-4">항목</th>
-                            <th class="p-4 text-center">예·적금</th>
-                            <th class="p-4 text-center bg-blue-900">채권 (추천)</th>
-                            <th class="p-4 text-center">배당주</th>
-                        </tr>
-                    </thead>
-                    <tbody id="comparison-body"></tbody>
-                </table>
+        <!-- SECTION 4: 실전투자가이드 -->
+        <section id="practical" class="scroll-mt-24 space-y-12">
+            <div class="text-center">
+                <span class="bg-indigo-100 text-indigo-800 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide">Chapter 4</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-2">실전 투자 가이드</h2>
+                <p class="mt-4 text-slate-600">데이터로 선별한 신용 등급별 부도율과 실전 투자 리스트</p>
             </div>
         </section>
 
+
+        <!-- Section 1: Default Rate & Interest Rate -->
+        <section>
+            <div class="flex items-center mb-6">
+                <div class="bg-blue-600 p-2 rounded-lg mr-4">
+                    <i class="fas fa-chart-line text-white"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold">(실전) 신용등급별 누적 부도율 & 금리 비교</h2>
+                    <p class="text-sm text-slate-500">부도율 및 금리 출처: 한국기업평가(KR) 등급별 통계 (1998~2025)</p>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="table-container">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-200">
+                                <th class="p-4 font-bold text-slate-600">신용등급</th>
+                                <th class="p-4 font-bold text-slate-600">1년 부도율</th>
+                                <th class="p-4 font-bold text-slate-600">2년 누적</th>
+                                <th class="p-4 font-bold text-slate-600">3년 누적</th>
+                                <th class="p-4 font-bold text-blue-600">25.07 금리</th>
+                                <th class="p-4 font-bold text-indigo-600">25.12 금리</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr><td class="p-4 font-bold">AAA</td><td class="p-4">0.00%</td><td class="p-4">0.00%</td><td class="p-4">0.00%</td><td class="p-4 text-blue-600">2.76%</td><td class="p-4 text-indigo-600">3.26%</td></tr>
+                            <tr><td class="p-4 font-bold">AA</td><td class="p-4">0.00%</td><td class="p-4">0.00%</td><td class="p-4">0.00%</td><td class="p-4 text-blue-600">2.89%</td><td class="p-4 text-indigo-600">3.39%</td></tr>
+                            <tr class="bg-blue-50/50">
+                                <td class="p-4 font-bold">A (A+~A-)</td>
+                                <td class="p-4">0.04%</td>
+                                <td class="p-4">0.12%</td>
+                                <td class="p-4">0.21%</td>
+                                <td class="p-4 font-semibold text-blue-600">3.31~4.07%</td>
+                                <td class="p-4 font-semibold text-indigo-600">3.79~4.57%</td>
+                            </tr>
+                            <tr class="bg-yellow-50/50">
+                                <td class="p-4 font-bold text-amber-700">BBB</td>
+                                <td class="p-4 font-semibold">0.35%</td>
+                                <td class="p-4 font-semibold">0.77%</td>
+                                <td class="p-4 font-semibold">1.38%</td>
+                                <td class="p-4 font-bold text-blue-600">7.36%</td>
+                                <td class="p-4 font-bold text-indigo-600">7.85%</td>
+                            </tr>
+                            <tr class="bg-red-50/50">
+                                <td class="p-4 font-bold text-red-700">BB</td>
+                                <td class="p-4">3.66%</td>
+                                <td class="p-4">6.34%</td>
+                                <td class="p-4">7.97%</td>
+                                <td class="p-4 text-blue-600">11.01%</td>
+                                <td class="p-4 text-indigo-600">11.50%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-8 grid md:grid-cols-2 gap-6">
+                    <div class="p-5 border-l-4 border-indigo-500 bg-indigo-50 rounded-r-lg">
+                        <h3 class="font-bold text-indigo-900 mb-2">💡 구조적 핵심 메시지 (A- ↔ BBB)</h3>
+                        <p class="text-sm text-indigo-800 leading-relaxed">
+                            부도율 증가는 미미하지만(A- 3년 0.21% vs BBB 3년 1.38%), 금리는 <b>4.57%에서 7.85%로 폭등</b>합니다. 이 구간이 위험 대비 수익성이 가장 높은 채권 투자의 <b>'스윗 스팟'</b>입니다.
+                        </p>
+                    </div>
+                    <div class="p-5 border-l-4 border-red-500 bg-red-50 rounded-r-lg">
+                        <h3 class="font-bold text-red-900 mb-2">⚠️ 경계선 붕괴 (BBB ↔ BB)</h3>
+                        <p class="text-sm text-red-800 leading-relaxed">
+                            BB 등급부터는 1년 부도율이 급등(3.66%)하여 <b>원금 손실 위험이 기하급수적으로 증가</b>합니다. 개인 투자자는 BBB등급 이상의 우량 채권에 집중해야 합니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Investment Candidate List -->
+        <section>
+            <div class="flex items-center mb-6">
+                <div class="bg-amber-500 p-2 rounded-lg mr-4">
+                    <i class="fas fa-list-check text-white"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold">(실전) 채권투자 후보 리스트(2026년01월30일 현재)</h2>
+                    <p class="text-sm text-slate-500">재무 스터디 요약 및 최종 투자 판단</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="table-container">
+                    <table class="w-full text-left text-sm border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-200 text-slate-600">
+                                <th class="p-4">발행사</th>
+                                <th class="p-4">종목명</th>
+                                <th class="p-4">만기</th>
+                                <th class="p-4 text-blue-600">표면이율</th>
+                                <th class="p-4">재무 스터디 요약</th>
+                                <th class="p-4">투자 판단</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="p-4 font-bold">이랜드월드</td><td class="p-4">이랜드월드106-1</td><td class="p-4">2026-08</td>
+                                <td class="p-4 font-bold text-blue-600">6.60%</td><td class="p-4">OCF 개선, 금융비용 민감도 높음</td>
+                                <td class="p-4 text-center"><span class="status-badge badge-pass">🟡 가능</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="p-4 font-bold">이랜드월드</td><td class="p-4">이랜드월드106-2</td><td class="p-4">2027-02</td>
+                                <td class="p-4 font-bold text-blue-600">6.80%</td><td class="p-4">상동 (단기 유동성 양호)</td>
+                                <td class="p-4 text-center"><span class="status-badge badge-pass">🟡 가능</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="p-4 font-bold">중앙일보</td><td class="p-4">중앙일보46</td><td class="p-4">2027-01</td>
+                                <td class="p-4 font-bold text-blue-600">6.20%</td><td class="p-4">안정적이나 성장 둔화세</td>
+                                <td class="p-4 text-center"><span class="status-badge badge-pass">🟡 가능</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="p-4 font-bold">중앙일보</td><td class="p-4">중앙일보47</td><td class="p-4">2027-11</td>
+                                <td class="p-4 font-bold text-blue-600">6.84%</td><td class="p-4">동일 재무구조이나 만기 기간이 긺</td>
+                                <td class="p-4 text-center"><span class="status-badge badge-caution">⚠️ 기간 주의</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="p-4 font-bold">에스엘엘중앙</td><td class="p-4">에스엘엘중앙21</td><td class="p-4">2026-09</td>
+                                <td class="p-4 font-bold text-blue-600">7.60%</td><td class="p-4">영업이익 턴어라운드, 높은 차환 의존도</td>
+                                <td class="p-4 text-center"><span class="status-badge badge-caution">⚠️ 고위험</span></td>
+                            </tr>
+                            <tr class="bg-red-50/30">
+                                <td class="p-4 font-bold">CJ CGV</td><td class="p-4">CJ CGV 41-1</td><td class="p-4">2027-01</td>
+                                <td class="p-4 font-bold text-slate-400 line-through">5.45%</td><td class="p-4">초고레버리지, 재무 건전성 악화</td>
+                                <td class="p-4 text-center"><span class="status-badge badge-fail">❌ 제외</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="p-4 font-bold">HL D&I</td><td class="p-4">한라156-1</td><td class="p-4">2026-06</td>
+                                <td class="p-4 font-bold text-blue-600">6.00%</td><td class="p-4">OCF 약함, 건설 섹터 리스크 상존</td>
+                                <td class="p-4 text-center"><span class="status-badge badge-caution">⚠️ 소액권장</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tip for Beginners -->
+        <div class="bg-slate-800 text-white p-8 rounded-2xl">
+            <h3 class="text-xl font-bold mb-4"><i class="fas fa-lightbulb text-yellow-400 mr-2"></i>초보자를 위한 실전 투자 팁</h3>
+            <div class="grid md:grid-cols-3 gap-6 text-sm">
+                <div>
+                    <h4 class="font-bold text-yellow-400 mb-2"><i class="fas fa-check-circle mr-2"></i>OCF 🟢 확인</h4>
+                    <p class="text-slate-400 text-sm">영업활동현금흐름(OCF)이 플러스인 기업이 끝까지 이자를 줍니다.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-yellow-400 mb-2"><i class="fas fa-check-circle mr-2"></i>BBB 등급 활용</h4>
+                    <p class="text-slate-400 text-sm">통계적으로 BBB 등급은 공포에 비해 실제 부도율이 낮아 수익성이 좋습니다.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-yellow-400 mb-2"><i class="fas fa-check-circle mr-2"></i>단기물 집중</h4>
+                    <p class="text-slate-400 text-sm">금리 변동기에는 만기 1~1.5년의 단기 채권이 리스크 관리에 유리합니다.</p>
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
@@ -305,46 +441,22 @@
                 <span class="font-bold text-white text-lg">BondMaster</span>
                 <p class="text-sm mt-1">성공적인 투자를 위한 데이터 기반 가이드</p>
             </div>
-            <div class="text-xs mt-4 md:mt-0">
-                <p>&copy; 2024 Bond Investment Guide. All rights reserved.</p>
+            <div class="text-xs mt-6 md:mt-0">
+                <p>&copy; 2026 Bond Investment Masterclass. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // --- Data ---
-        const comparisonData = [
-            { label: '위험도', savings: '매우 낮음', bond: '낮음', dividend: '중간' },
-            { label: '수익성', savings: '고정 이자', bond: '이자 + 매매차익', dividend: '배당 + 성장 + 주가변동' },
-            { label: '유동성', savings: '제한적', bond: '높음', dividend: '높음' },
-            { label: '적합성', savings: '안정 우선', bond: '수익/안정 균형', dividend: '장기 수익 추구' }
-        ];
-
-        const tableBody = document.getElementById('comparison-body');
-        comparisonData.forEach((row, i) => {
-            const tr = document.createElement('tr');
-            tr.className = i % 2 === 0 ? 'bg-slate-50' : 'bg-white';
-            tr.innerHTML = `
-                <td class="p-4 font-bold border-b border-slate-100">${row.label}</td>
-                <td class="p-4 text-center border-b border-slate-100">${row.savings}</td>
-                <td class="p-4 text-center border-b border-slate-100 bg-blue-50 font-bold text-blue-700">${row.bond}</td>
-                <td class="p-4 text-center border-b border-slate-100">${row.dividend}</td>
-            `;
-            tableBody.appendChild(tr);
-        });
-
-        // --- Interaction ---
         function scrollToSection(id) {
             document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
         }
 
-        // --- Charts ---
         window.onload = function() {
             Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
 
-            // 1) KDIC Official Data Chart
-            const ctx1 = document.getElementById('kdicOfficialChart').getContext('2d');
-            new Chart(ctx1, {
+            // 1) KDIC Chart
+            new Chart(document.getElementById('kdicOfficialChart'), {
                 type: 'doughnut',
                 data: {
                     labels: ['국공채·금융채', '예치금 등', '기타자산'],
@@ -354,67 +466,24 @@
                         borderWidth: 0
                     }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'right' }
-                    },
-                    cutout: '62%'
-                }
+                options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'bottom' } } }
             });
 
-            // 2) Savings vs Bond Comparison (Stacked)
-            const ctx2 = document.getElementById('savingsVsBondChart').getContext('2d');
-            new Chart(ctx2, {
+            // 2) Savings vs Bond Chart
+            new Chart(document.getElementById('savingsVsBondChart'), {
                 type: 'bar',
                 data: {
-                    labels: ['예적금', '우량 채권'],
+                    labels: ['일반 예적금', '우량 회사채'],
                     datasets: [
-                        { label: '이자 수익', data: [3.5, 4.2], backgroundColor: '#94a3b8' },
-                        { label: '잠재 매매차익', data: [0, 2.8], backgroundColor: '#10b981' }
+                        { label: '확정 이자', data: [3.5, 4.5], backgroundColor: '#3b82f6' },
+                        { label: '잠재 매매차익', data: [0, 2.5], backgroundColor: '#10b981' }
                     ]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: { stacked: true },
-                        y: { stacked: true, beginAtZero: true }
-                    },
-                    plugins: {
-                        legend: { position: 'bottom' }
-                    }
-                }
+                options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true } } }
             });
 
-            // 3) Core–Satellite Doughnut + Center Text
-            const centerTextPlugin = {
-                id: 'centerTextPlugin',
-                afterDraw(chart, args, pluginOptions) {
-                    const { ctx } = chart;
-                    const meta = chart.getDatasetMeta(0);
-                    if (!meta || !meta.data || !meta.data[0]) return;
-
-                    const x = meta.data[0].x;
-                    const y = meta.data[0].y;
-
-                    ctx.save();
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-
-                    ctx.fillStyle = '#ffffff';
-                    ctx.font = '700 16px Noto Sans KR';
-                    ctx.fillText('CORE 60%', x, y - 10);
-
-                    ctx.font = '700 14px Noto Sans KR';
-                    ctx.fillText('SAT 40%', x, y + 12);
-                    ctx.restore();
-                }
-            };
-
-            const ctx3 = document.getElementById('coreSatelliteChart').getContext('2d');
-            new Chart(ctx3, {
+            // 3) Core-Satellite Chart
+            new Chart(document.getElementById('coreSatelliteChart'), {
                 type: 'doughnut',
                 data: {
                     labels: ['핵심(Core) 60%', '위성(Satellite) 40%'],
@@ -424,25 +493,9 @@
                         borderWidth: 0
                     }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return `${context.label}`;
-                                }
-                            }
-                        }
-                    },
-                    cutout: '58%'
-                },
-                plugins: [centerTextPlugin]
+                options: { responsive: true, maintainAspectRatio: false, cutout: '65%' }
             });
         };
     </script>
 </body>
 </html>
-
