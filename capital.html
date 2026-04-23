@@ -1,247 +1,935 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>투자 기초 이해: 소득, 자금 분류, 위험등급</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
-        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f8fafc; color: #1e293b; }
-        .gradient-bg { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
-        .card { background: white; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); transition: transform 0.2s; }
-        .card:hover { transform: translateY(-4px); }
-        .highlight { color: #2563eb; font-weight: 700; }
-        .risk-1 { background-color: #fee2e2; border-left: 4px solid #ef4444; }
-        .risk-2 { background-color: #ffedd5; border-left: 4px solid #f97316; }
-        .risk-3 { background-color: #fef9c3; border-left: 4px solid #eab308; }
-        .risk-4 { background-color: #ecfdf5; border-left: 4px solid #10b981; }
-        .risk-5 { background-color: #eff6ff; border-left: 4px solid #3b82f6; }
-        .risk-6 { background-color: #f8fafc; border-left: 4px solid #94a3b8; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>수익으로 소비하는 삶</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&family=Noto+Serif+KR:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #1a2e4a;
+      --blue: #2563a8;
+      --blue-light: #dbeafe;
+      --green: #16a34a;
+      --green-light: #dcfce7;
+      --green-mid: #4ade80;
+      --amber: #d97706;
+      --amber-light: #fef3c7;
+      --red: #dc2626;
+      --red-light: #fee2e2;
+      --slate: #64748b;
+      --slate-light: #f1f5f9;
+      --white: #ffffff;
+      --gold: #f59e0b;
+    }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+      line-height: 1.6;
+    }
+
+    /* ─── HERO ─────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, #0f2744 0%, #1a3a6e 45%, #1e5c4a 100%);
+      color: white;
+      padding: 48px 40px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 70% 30%, rgba(99,196,152,0.15) 0%, transparent 60%),
+                  radial-gradient(ellipse at 20% 80%, rgba(37,99,168,0.2) 0%, transparent 50%);
+    }
+    .hero-inner {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: center;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .hero-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(2.4rem, 6vw, 3.8rem);
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+    .hero-title span { color: #6ee7b7; }
+    .hero-sub {
+      margin-top: 10px;
+      font-size: 1.05rem;
+      color: #a5f3d0;
+      font-weight: 500;
+    }
+    .hero-quote {
+      margin-top: 18px;
+      background: rgba(255,255,255,0.1);
+      border-left: 3px solid #6ee7b7;
+      padding: 12px 18px;
+      border-radius: 0 12px 12px 0;
+      font-size: 0.9rem;
+      color: #e0f2fe;
+      max-width: 520px;
+    }
+    .hero-illustration {
+      width: 160px;
+      flex-shrink: 0;
+    }
+
+    /* Money tree SVG */
+    .tree-svg { width: 160px; height: 180px; }
+
+    /* ─── FLOW BAR ──────────────────────────────────────── */
+    .flow-bar {
+      background: white;
+      border-top: 4px solid #6ee7b7;
+      padding: 24px 40px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+    }
+    .flow-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+    .flow-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 0 20px;
+    }
+    .flow-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+    .flow-icon.income { background: #e0e7ff; }
+    .flow-icon.invest { background: #dcfce7; }
+    .flow-icon.profit { background: #fef9c3; }
+    .flow-icon.consume { background: #dbeafe; }
+    .flow-label { font-weight: 800; font-size: 1.05rem; color: var(--navy); }
+    .flow-desc { font-size: 0.72rem; color: var(--slate); text-align: center; line-height: 1.4; max-width: 80px; }
+    .flow-arrow {
+      font-size: 1.6rem;
+      color: #94a3b8;
+      padding: 0 4px;
+      margin-bottom: 24px;
+    }
+
+    /* ─── WRAPPER ────────────────────────────────────────── */
+    .wrapper {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    /* ─── SECTION TITLE ─────────────────────────────────── */
+    .section-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: white;
+      background: var(--navy);
+      display: inline-block;
+      padding: 6px 18px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      border: 1.5px solid #e2e8f0;
+    }
+
+    /* ─── SECTION 1 & 2 ──────────────────────────────────── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 0.8fr; gap: 18px; }
+
+    .structure-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      flex-wrap: wrap;
+    }
+    .structure-row.bad { background: #f8fafc; border: 1.5px solid #e2e8f0; color: #475569; }
+    .structure-row.good { background: #dcfce7; border: 1.5px solid #bbf7d0; color: #166534; }
+    .structure-row .label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .label-bad { background: #e2e8f0; color: #64748b; }
+    .label-good { background: #bbf7d0; color: #166534; }
+    .structure-key {
+      margin-top: 12px;
+      font-size: 0.8rem;
+      color: #059669;
+      font-weight: 600;
+      padding: 8px 14px;
+      background: #ecfdf5;
+      border-radius: 8px;
+    }
+
+    /* comparison boxes */
+    .compare-box {
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .compare-box.bad { background: #fff1f2; border: 1.5px solid #fecdd3; }
+    .compare-box.good { background: #f0fdf4; border: 1.5px solid #bbf7d0; }
+    .compare-title { font-weight: 800; font-size: 0.95rem; margin-bottom: 12px; }
+    .compare-box.bad .compare-title { color: #be123c; }
+    .compare-box.good .compare-title { color: #15803d; }
+    .compare-list { list-style: none; }
+    .compare-list li {
+      font-size: 0.82rem;
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+    .compare-list li:last-child { border-bottom: none; }
+    .compare-box.bad .compare-list li::before { content: '😞'; font-size: 0.85rem; }
+    .compare-box.good .compare-list li::before { content: '✅'; font-size: 0.85rem; }
+
+    .highlight-banner {
+      margin-top: 16px;
+      background: linear-gradient(90deg, #166534, #15803d);
+      color: white;
+      text-align: center;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    /* ─── SECTION 3 ──────────────────────────────────────── */
+    .expense-card {
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .expense-card.essential { background: #eff6ff; border: 1.5px solid #bfdbfe; }
+    .expense-card.flexible  { background: #fffbeb; border: 1.5px solid #fde68a; }
+    .expense-card.goal      { background: var(--navy); color: white; }
+    .expense-title { font-weight: 800; font-size: 1rem; margin-bottom: 4px; }
+    .expense-sub   { font-size: 0.75rem; margin-bottom: 14px; }
+    .expense-card.essential .expense-title { color: #1e40af; }
+    .expense-card.essential .expense-sub   { color: #3b82f6; }
+    .expense-card.flexible .expense-title  { color: #92400e; }
+    .expense-card.flexible .expense-sub    { color: #d97706; }
+    .expense-list { list-style: none; }
+    .expense-list li {
+      font-size: 0.82rem;
+      padding: 5px 0;
+      border-bottom: 1px dotted rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .expense-list li:last-child { border-bottom: none; }
+    .expense-emoji { font-size: 1.1rem; }
+
+    /* ─── SECTION 4 ROADMAP ─────────────────────────────── */
+    .roadmap-section { background: #f1f5f9; padding: 32px 24px; }
+    .roadmap-desc { font-size: 0.85rem; color: var(--slate); margin-bottom: 20px; }
+    .stages-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      position: relative;
+    }
+    .stage-card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      position: relative;
+    }
+    .stage-number {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: white;
+      font-weight: 900;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    .stage-name { font-size: 0.8rem; font-weight: 700; color: var(--slate); margin-bottom: 4px; }
+    .stage-title { font-size: 0.95rem; font-weight: 800; color: var(--navy); margin-bottom: 12px; }
+    .stage-emoji { font-size: 2rem; display: block; margin-bottom: 8px; }
+    .stage-points { list-style: none; }
+    .stage-points li {
+      font-size: 0.78rem;
+      color: #475569;
+      padding: 3px 0;
+      display: flex;
+      gap: 5px;
+    }
+    .stage-points li::before { content: '•'; color: var(--blue); font-weight: 900; }
+    .roadmap-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 16px;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: var(--slate);
+      font-weight: 600;
+    }
+    .roadmap-arrow-line {
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, #3b82f6, #10b981);
+      position: relative;
+    }
+    .roadmap-arrow-line::after {
+      content: '▶';
+      position: absolute;
+      right: -4px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #10b981;
+      font-size: 0.7rem;
+    }
+
+    /* ─── SECTION 5 MILESTONES ──────────────────────────── */
+    .formula-box {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--navy);
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .milestone-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px;
+      border-radius: 14px;
+      margin-bottom: 10px;
+      border: 1.5px solid transparent;
+    }
+    .milestone-item.m30 { background: #eff6ff; border-color: #bfdbfe; }
+    .milestone-item.m50 { background: #f0fdf4; border-color: #bbf7d0; }
+    .milestone-item.m70 { background: #fff7ed; border-color: #fed7aa; }
+    .milestone-item.m100 { background: #fdf4ff; border-color: #e9d5ff; }
+    .milestone-badge {
+      width: 60px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+    .m30 .milestone-badge  { background: #2563eb; color: white; }
+    .m50 .milestone-badge  { background: #16a34a; color: white; }
+    .m70 .milestone-badge  { background: #ea580c; color: white; }
+    .m100 .milestone-badge { background: #7c3aed; color: white; }
+    .milestone-info {}
+    .milestone-label { font-weight: 800; font-size: 0.9rem; }
+    .m30 .milestone-label  { color: #1e40af; }
+    .m50 .milestone-label  { color: #166534; }
+    .m70 .milestone-label  { color: #c2410c; }
+    .m100 .milestone-label { color: #6d28d9; }
+    .milestone-desc { font-size: 0.78rem; color: var(--slate); margin-top: 2px; }
+
+    /* ─── SECTION 6 BIASES ──────────────────────────────── */
+    .bias-card {
+      background: white;
+      border-radius: 16px;
+      padding: 22px;
+      border: 1.5px solid #e2e8f0;
+      text-align: center;
+    }
+    .bias-icon { font-size: 2.4rem; margin-bottom: 10px; }
+    .bias-en { font-size: 0.72rem; color: var(--slate); font-weight: 600; letter-spacing: 0.05em; }
+    .bias-name { font-weight: 800; font-size: 1rem; color: var(--navy); margin: 4px 0; }
+    .bias-desc { font-size: 0.78rem; color: #475569; line-height: 1.6; margin-bottom: 14px; }
+    .bias-solution {
+      background: #fef3c7;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.75rem;
+      color: #92400e;
+      font-weight: 600;
+    }
+    .bias-solution::before { content: '💡 해결책: '; }
+    .biases-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+    /* ─── SECTION 7 PRINCIPLES ──────────────────────────── */
+    .principles-list { list-style: none; }
+    .principles-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 16px;
+      background: #f0fdf4;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      border: 1.5px solid #bbf7d0;
+    }
+    .principle-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+    .principle-text { font-size: 0.88rem; font-weight: 600; color: #166534; }
+
+    /* ─── SECTION 8 FORMULA ─────────────────────────────── */
+    .formula-section {
+      background: linear-gradient(135deg, #0f172a, #1e3a5f);
+      border-radius: 20px;
+      padding: 28px;
+      color: white;
+    }
+    .formula-section h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 24px; }
+    .formula-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .formula-box-dark {
+      background: rgba(255,255,255,0.1);
+      border: 1.5px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      padding: 12px 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+    .formula-box-dark.highlight {
+      background: #4ade80;
+      color: #052e16;
+      border-color: #4ade80;
+      font-size: 1rem;
+      font-weight: 900;
+    }
+    .formula-eq { font-size: 1.4rem; font-weight: 900; color: #4ade80; }
+    .formula-plus { font-size: 1.4rem; font-weight: 900; color: #94a3b8; }
+    .formula-down { display: block; text-align: center; font-size: 1.8rem; color: #4ade80; margin: 4px 0; }
+
+    /* ─── FOOTER ─────────────────────────────────────────── */
+    .footer-section {
+      border-top: 4px solid #e2e8f0;
+      background: white;
+      padding: 40px 24px;
+    }
+    .footer-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 32px;
+      align-items: center;
+    }
+    .footer-quote {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 900;
+      line-height: 1.4;
+      color: var(--navy);
+    }
+    .footer-quote span { color: #16a34a; }
+    .footer-sub {
+      margin-top: 12px;
+      font-size: 0.88rem;
+      color: var(--slate);
+      line-height: 1.7;
+    }
+    .footer-checklist { list-style: none; }
+    .footer-checklist li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      font-size: 0.88rem;
+      color: #1e293b;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .footer-checklist li:last-child { border-bottom: none; }
+    .footer-checklist li::before { content: '✅'; font-size: 1rem; }
+    .footer-cta {
+      margin-top: 14px;
+      background: linear-gradient(90deg, #1a2e4a, #166534);
+      color: white;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      line-height: 1.6;
+    }
+
+    /* ─── MISC ────────────────────────────────────────────── */
+    .mb-20 { margin-bottom: 20px; }
+    .mb-32 { margin-bottom: 32px; }
+
+    @media (max-width: 700px) {
+      .grid-2, .grid-3, .stages-grid, .biases-grid { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr; }
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-illustration { display: none; }
+      .flow-arrow { display: none; }
+      .flow-inner { gap: 8px; }
+    }
+  </style>
 </head>
-<body class="pb-20">
+<body>
 
-    <!-- Header -->
-    <header class="gradient-bg text-white py-16 px-6 text-center">
-        <h1 class="text-3xl md:text-4xl font-bold mb-4">📘 투자 기초 이해를 위한 전체 구조</h1>
-        <p class="text-lg opacity-90">소득 · 자금 분류 · 투자 위험등급 한 번에 이해하기</p>
-    </header>
+<!-- ═══ HERO ═══════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <h1 class="hero-title">수익으로 <span>소비하는</span> 삶</h1>
+      <p class="hero-sub">노동의 대가가 아닌, 자산이 만들어내는 수익으로 소비하라!</p>
+      <div class="hero-quote">
+        "소득을 소비하기 위해 존재하는 것이 아니라, 자산을 만들기 위한 수단으로 활용한다."
+      </div>
+    </div>
+    <div class="hero-illustration">
+      <!-- Money Tree Illustration -->
+      <svg class="tree-svg" viewBox="0 0 160 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Tree canopy -->
+        <ellipse cx="90" cy="70" rx="55" ry="55" fill="#16a34a" opacity="0.9"/>
+        <ellipse cx="80" cy="60" rx="45" ry="45" fill="#22c55e"/>
+        <ellipse cx="95" cy="55" rx="35" ry="38" fill="#4ade80" opacity="0.7"/>
+        <!-- Coins in tree -->
+        <circle cx="70" cy="55" r="10" fill="#fbbf24"/>
+        <text x="70" y="59" text-anchor="middle" font-size="10" font-weight="bold" fill="#92400e">₩</text>
+        <circle cx="95" cy="45" r="9" fill="#fbbf24"/>
+        <text x="95" y="49" text-anchor="middle" font-size="9" font-weight="bold" fill="#92400e">₩</text>
+        <circle cx="82" cy="72" r="8" fill="#fbbf24"/>
+        <text x="82" y="76" text-anchor="middle" font-size="8" font-weight="bold" fill="#92400e">₩</text>
+        <!-- Trunk -->
+        <rect x="78" y="118" width="16" height="44" rx="4" fill="#92400e"/>
+        <!-- Ground -->
+        <ellipse cx="86" cy="162" rx="28" ry="8" fill="#166534" opacity="0.5"/>
+        <!-- Coin pile -->
+        <ellipse cx="130" cy="172" rx="22" ry="8" fill="#d97706" opacity="0.4"/>
+        <circle cx="118" cy="165" r="8" fill="#fbbf24"/>
+        <circle cx="128" cy="162" r="9" fill="#f59e0b"/>
+        <circle cx="138" cy="165" r="8" fill="#fbbf24"/>
+        <text x="128" y="166" text-anchor="middle" font-size="8" font-weight="bold" fill="#92400e">₩</text>
+        <!-- Person sitting -->
+        <circle cx="28" cy="148" r="10" fill="#fcd34d"/>
+        <rect x="20" y="158" width="16" height="18" rx="4" fill="#3b82f6"/>
+        <line x1="20" y1="165" x2="10" y2="178" stroke="#fcd34d" stroke-width="4" stroke-linecap="round"/>
+        <line x1="36" y1="165" x2="46" y2="178" stroke="#fcd34d" stroke-width="4" stroke-linecap="round"/>
+        <!-- Chair -->
+        <rect x="5" y="175" width="50" height="5" rx="2" fill="#92400e"/>
+        <rect x="5" y="158" width="5" height="22" rx="2" fill="#92400e"/>
+        <rect x="50" y="158" width="5" height="22" rx="2" fill="#92400e"/>
+        <!-- Coffee cup -->
+        <rect x="40" y="162" width="12" height="10" rx="2" fill="white"/>
+        <path d="M52 165 Q57 165 57 168 Q57 172 52 172" fill="none" stroke="white" stroke-width="1.5"/>
+      </svg>
+    </div>
+  </div>
+</section>
 
-    <main class="max-w-4xl mx-auto px-6 -mt-10">
-        
-        <!-- Section 1: Introduction -->
-        <section class="card p-8 mb-8">
-            <h2 class="text-2xl font-bold mb-6 flex items-center">
-                <span class="bg-blue-100 text-blue-600 p-2 rounded-lg mr-3"><i class="fas fa-chart-line"></i></span>
-                예·적금만으로는 자산이 늘지 않는 이유
-            </h2>
-            <div class="space-y-4">
-                <p class="text-lg leading-relaxed text-gray-700">
-                    월급은 꾸준히 받는데 왜 내 자산은 제자리일까요? 그 이유는 기술의 부족이 아니라 <span class="highlight">소득·소비·투자의 구조</span>를 이해하지 못했기 때문입니다.
-                </p>
-                <div class="bg-blue-50 p-6 rounded-xl border-l-4 border-blue-500">
-                    <p class="font-bold text-blue-800 mb-2">오늘의 목표</p>
-                    <p class="text-blue-700">“돈의 흐름을 이해하고, 투자에 대한 막연한 두려움을 없애는 것”</p>
-                </div>
-            </div>
-        </section>
+<!-- ═══ FLOW BAR ════════════════════════════════════════════ -->
+<div class="flow-bar">
+  <div class="flow-inner">
+    <div class="flow-item">
+      <div class="flow-icon income">💼</div>
+      <div class="flow-label">소 득</div>
+      <div class="flow-desc">노동·사업으로 소득 창출</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item">
+      <div class="flow-icon invest">🌱</div>
+      <div class="flow-label">투자(자산화)</div>
+      <div class="flow-desc">모든 소득을 투자 자산으로 전환</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item">
+      <div class="flow-icon profit">📈</div>
+      <div class="flow-label">수 익</div>
+      <div class="flow-desc">배당·이자·임대수익 등 지속적 현금흐름</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item">
+      <div class="flow-icon consume">🛒</div>
+      <div class="flow-label">소 비</div>
+      <div class="flow-desc">투자수익 범위 내에서 소비(수익소비)</div>
+    </div>
+  </div>
+</div>
 
-        <!-- Section 2: Structure -->
-        <section class="card p-8 mb-8">
-            <h2 class="text-2xl font-bold mb-6">돈은 이렇게 흘러야 합니다</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="bg-red-50 p-6 rounded-xl">
-                    <h3 class="font-bold text-red-600 mb-4 text-center">❌ 잘못된 구조</h3>
-                    <div class="flex flex-col items-center space-y-2">
-                        <div class="bg-white px-4 py-2 rounded shadow text-sm">소득</div>
-                        <i class="fas fa-arrow-down text-red-300"></i>
-                        <div class="bg-white px-4 py-2 rounded shadow text-sm">소비</div>
-                        <i class="fas fa-arrow-down text-red-300"></i>
-                        <div class="text-red-500 font-bold italic">남는 돈 없음</div>
-                    </div>
-                </div>
-                <div class="bg-green-50 p-6 rounded-xl">
-                    <h3 class="font-bold text-green-600 mb-4 text-center">⭕ 바람직한 구조</h3>
-                    <div class="flex flex-col items-center space-y-2">
-                        <div class="bg-white px-4 py-2 rounded shadow text-sm font-bold">소득</div>
-                        <i class="fas fa-arrow-down text-green-300"></i>
-                        <div class="bg-green-600 text-white px-4 py-2 rounded shadow text-sm font-bold">투자(자산)</div>
-                        <i class="fas fa-arrow-down text-green-300"></i>
-                        <div class="bg-white px-4 py-2 rounded shadow text-sm">수익</div>
-                        <i class="fas fa-arrow-down text-green-300"></i>
-                        <div class="bg-blue-600 text-white px-4 py-2 rounded shadow text-sm font-bold">소비</div>
-                    </div>
-                </div>
-            </div>
-            <div class="mt-8 text-center space-y-2">
-                <p class="text-xl font-bold">"소비는 <span class="text-blue-600">투자의 수익</span>으로 하는 것입니다."</p>
-                <p class="text-gray-500">소득은 자산을 만드는 원천이 되어야 합니다.</p>
-            </div>
-        </section>
+<div class="wrapper">
 
-        <!-- Section 3: Classification -->
-        <section class="card p-8 mb-8">
-            <h2 class="text-2xl font-bold mb-6 text-center">월급 즉시 자금 분류 4단계</h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="text-center p-4 bg-gray-50 rounded-lg border">
-                    <i class="fas fa-file-invoice-dollar text-2xl text-gray-400 mb-2"></i>
-                    <p class="font-bold">고정지출</p>
-                </div>
-                <div class="text-center p-4 bg-gray-50 rounded-lg border">
-                    <i class="fas fa-shopping-cart text-2xl text-orange-400 mb-2"></i>
-                    <p class="font-bold">생활비</p>
-                </div>
-                <div class="text-center p-4 bg-gray-50 rounded-lg border">
-                    <i class="fas fa-shield-alt text-2xl text-green-400 mb-2"></i>
-                    <p class="font-bold">비상금</p>
-                </div>
-                <div class="text-center p-4 bg-blue-50 rounded-lg border-2 border-blue-200">
-                    <i class="fas fa-seedling text-2xl text-blue-500 mb-2"></i>
-                    <p class="font-bold">투자자금</p>
-                </div>
-            </div>
-            <p class="mt-6 text-center text-gray-600 italic">돈을 모으는 차이는 금액이 아니라 '분리 여부'에 있습니다.</p>
-        </section>
+  <!-- ═══ SECTION 1 & 2 ══════════════════════════════════ -->
+  <div class="grid-2 mb-32">
 
-        <!-- Section 4-6: Detailed Breakdown -->
-        <div class="grid md:grid-cols-3 gap-6 mb-8">
-            <div class="card p-6 border-t-4 border-orange-400">
-                <h3 class="font-bold text-lg mb-3">1. 소비 (통제)</h3>
-                <ul class="text-sm space-y-2 text-gray-600">
-                    <li>• 고정지출: 보험, 월세 등</li>
-                    <li>• 생활비: 체크카드 활용</li>
-                    <li>• 목적: 절약보다 <span class="font-bold">통제</span></li>
-                </ul>
-            </div>
-            <div class="card p-6 border-t-4 border-green-400">
-                <h3 class="font-bold text-lg mb-3">2. 비상금 (안전장치)</h3>
-                <ul class="text-sm space-y-2 text-gray-600">
-                    <li>• 보관: CMA, 단기채</li>
-                    <li>• 성격: 투자도 소비도 아님</li>
-                    <li>• 목적: <span class="font-bold">불안 감소</span>로 투자 유지</li>
-                </ul>
-            </div>
-            <div class="card p-6 border-t-4 border-blue-400">
-                <h3 class="font-bold text-lg mb-3">3. 투자자금 (분리)</h3>
-                <ul class="text-sm space-y-2 text-gray-600">
-                    <li>• 특징: 변동성 감내</li>
-                    <li>• 주의: 생활비와 섞지 말 것</li>
-                    <li>• 목적: <span class="font-bold">자산 증식</span></li>
-                </ul>
-            </div>
+    <!-- Section 1 -->
+    <div class="card">
+      <div class="section-title">1. 수익소비의 기본 구조</div>
+      <div style="margin-bottom: 12px;">
+        <div class="structure-row bad">
+          <span class="label label-bad">일반적 소비 구조 (비바람직)</span>
+          소득 → 소비 → 잔여금 저축
+        </div>
+      </div>
+      <div style="margin-bottom: 14px;">
+        <div class="structure-row good">
+          <span class="label label-good">수익기반 소비 구조 (바람직)</span>
+          소득 → 투자(자산화) → 수익 → 소비
+        </div>
+      </div>
+      <div class="structure-key">
+        ✔ 핵심 차이: '소비의 재원'이 소득이 아닌 투자수익
+      </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="card">
+      <div class="section-title">2. 소비의 재원: 왜 수익이어야 하는가?</div>
+      <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center;">
+        <div class="compare-box bad">
+          <div class="compare-title">노동소득 기반 소비</div>
+          <ul class="compare-list">
+            <li>고정적 노동 필요</li>
+            <li>소득 변동에 취약</li>
+            <li>경제 위기 시 위험</li>
+            <li>시간과 교환하는 구조</li>
+          </ul>
+        </div>
+        <div style="font-size:1.5rem; font-weight:900; color:#94a3b8; text-align:center;">VS</div>
+        <div class="compare-box good">
+          <div class="compare-title">투자수익 기반 소비</div>
+          <ul class="compare-list">
+            <li>반복적·예측 가능한 수익</li>
+            <li>경제 상황의 영향 ↓</li>
+            <li>자산 증가로 수익 확대</li>
+            <li>시간과 자유를 얻는 구조</li>
+          </ul>
+        </div>
+      </div>
+      <div class="highlight-banner">✔ 바람직한 구조는 '투자수익'을 중심으로 한 소비로의 전환!</div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 3 ════════════════════════════════════════ -->
+  <div class="card mb-32">
+    <div class="section-title">3. 소비 항목의 이해</div>
+    <p style="font-size:0.82rem; color:var(--slate); margin-bottom:16px;">소비는 두 가지로 구성된다</p>
+    <div class="grid-3">
+      <div class="expense-card essential">
+        <div class="expense-title">① 필수생활비</div>
+        <div class="expense-sub">(비탄력적 소비) — 감소가 어렵지만 반드시 충당해야 하는 비용</div>
+        <ul class="expense-list">
+          <li><span class="expense-emoji">🏠</span>주거비</li>
+          <li><span class="expense-emoji">💡</span>공과금</li>
+          <li><span class="expense-emoji">🍽️</span>식비</li>
+          <li><span class="expense-emoji">🏥</span>보험·의료비</li>
+          <li><span class="expense-emoji">🚌</span>교통비 등</li>
+        </ul>
+        <div style="margin-top:12px; font-size:0.75rem; padding:8px; background:#dbeafe; border-radius:8px; color:#1e40af; font-weight:600;">
+          감소가 어렵지만 반드시 충당해야 하는 비용
+        </div>
+      </div>
+
+      <div class="expense-card flexible">
+        <div class="expense-title">② 통제가능 생활비</div>
+        <div class="expense-sub">(탄력적 소비) — 조정이 가능하며 투자 여력 확보의 핵심 영역</div>
+        <ul class="expense-list">
+          <li><span class="expense-emoji">🍜</span>외식·간식</li>
+          <li><span class="expense-emoji">🛍️</span>쇼핑</li>
+          <li><span class="expense-emoji">✈️</span>여가·여행</li>
+          <li><span class="expense-emoji">🎭</span>취미·문화생활</li>
+          <li><span class="expense-emoji">📱</span>구독·멤버십 등</li>
+        </ul>
+        <div style="margin-top:12px; font-size:0.75rem; padding:8px; background:#fef9c3; border-radius:8px; color:#92400e; font-weight:600;">
+          조정이 가능한 비용, 최소화하여 투자 여력 확보
+        </div>
+      </div>
+
+      <div class="expense-card goal">
+        <div style="font-size:2rem; margin-bottom:10px;">🎯</div>
+        <div style="font-weight:800; font-size:1rem; margin-bottom:10px;">목 표</div>
+        <p style="font-size:0.8rem; color:#cbd5e1; line-height:1.7; margin-bottom:14px;">
+          필수생활비도 투자수익(배당 등)으로 대체해 나가는 것!
+        </p>
+        <div style="background:rgba(255,255,255,0.1); border-radius:10px; padding:12px; font-size:0.78rem; color:#a5f3d0; line-height:1.7;">
+          통제가능 소비는 최소화하고, 수익으로 기본생활을 유지한다.
+        </div>
+        <div style="margin-top:12px; font-size:2rem; text-align:center;">🐷💰</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /wrapper -->
+
+<!-- ═══ SECTION 4 ROADMAP ═══════════════════════════════════ -->
+<section class="roadmap-section">
+  <div style="max-width:960px; margin:0 auto; padding:0 24px;">
+    <div class="section-title">4. 수익소비 단계 로드맵</div>
+    <p class="roadmap-desc">자산과 수익이 커질수록, 소비의 재원이 바뀐다!</p>
+
+    <div class="stages-grid" style="gap:12px;">
+
+      <div class="stage-card">
+        <div class="stage-number">1</div>
+        <div class="stage-name">1단계</div>
+        <div class="stage-title">자산 축적기</div>
+        <span class="stage-emoji">🌱</span>
+        <ul class="stage-points">
+          <li>소비 최소화</li>
+          <li>투자 비율 극대화</li>
+          <li>통제가능 소비 강력 제한</li>
+        </ul>
+      </div>
+
+      <div class="stage-card">
+        <div class="stage-number">2</div>
+        <div class="stage-name">2단계</div>
+        <div class="stage-title">수익 발생기</div>
+        <span class="stage-emoji">💰</span>
+        <ul class="stage-points">
+          <li>배당·이자 수익 발생 시작</li>
+          <li>발생 수익 재투자 중심</li>
+          <li>소액의 수익으로 일부 소비 경험</li>
+        </ul>
+      </div>
+
+      <div class="stage-card">
+        <div class="stage-number">3</div>
+        <div class="stage-name">3단계</div>
+        <div class="stage-title">수익소비 전환기</div>
+        <span class="stage-emoji">🌳</span>
+        <ul class="stage-points">
+          <li>필수생활비 일부 대체 시작</li>
+          <li>통신비, 구독비, 식비 일부 대체</li>
+          <li>고정비 일부 수익으로 충당</li>
+          <li>노동소득 의존도 감소</li>
+        </ul>
+      </div>
+
+      <div class="stage-card" style="border: 2px solid #16a34a;">
+        <div class="stage-number" style="background:#16a34a;">4</div>
+        <div class="stage-name">4단계</div>
+        <div class="stage-title" style="color:#166534;">완전 수익소비 단계</div>
+        <span class="stage-emoji">🏆</span>
+        <ul class="stage-points">
+          <li>생활비 대부분을 투자수익으로 충당</li>
+          <li>노동소득 의존도 최소화</li>
+          <li>경제적 자유 실현</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="roadmap-arrow" style="margin-top:16px;">
+      <span>자산 성장</span>
+      <div class="roadmap-arrow-line"></div>
+      <span>수익 증가</span>
+      <div class="roadmap-arrow-line"></div>
+      <span>소비 자유 확대</span>
+    </div>
+  </div>
+</section>
+
+<div class="wrapper">
+
+  <!-- ═══ SECTION 5 & 6 ══════════════════════════════════ -->
+  <div class="grid-2 mb-32" style="margin-top:32px;">
+
+    <!-- Section 5 -->
+    <div class="card">
+      <div class="section-title">5. 생활비 대체율 목표</div>
+      <p style="font-size:0.82rem; color:var(--slate); margin-bottom:12px;">투자수익이 생활비를 얼마나 대체하고 있는가?</p>
+      <div class="formula-box">생활비 대체율 = 투자수익 ÷ 총 생활비 × 100(%)</div>
+
+      <div class="milestone-item m30">
+        <div class="milestone-badge">30%</div>
+        <div class="milestone-info">
+          <div class="milestone-label">부분적 안정</div>
+          <div class="milestone-desc">생활비 일부를 수익으로 충당</div>
+        </div>
+      </div>
+      <div class="milestone-item m50">
+        <div class="milestone-badge">50%</div>
+        <div class="milestone-info">
+          <div class="milestone-label">구조 전환 시작</div>
+          <div class="milestone-desc">생활 구조의 핵심이 소득에서 수익으로 이동</div>
+        </div>
+      </div>
+      <div class="milestone-item m70">
+        <div class="milestone-badge">70%</div>
+        <div class="milestone-info">
+          <div class="milestone-label">경제적 자유 초기 단계</div>
+          <div class="milestone-desc">노동의 필요성이 크게 감소</div>
+        </div>
+      </div>
+      <div class="milestone-item m100">
+        <div class="milestone-badge">100%</div>
+        <div class="milestone-info">
+          <div class="milestone-label">완전 수익소비</div>
+          <div class="milestone-desc">노동소득 없이도 안정적 생활</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 6 -->
+    <div class="card">
+      <div class="section-title">6. 수익소비를 방해하는 심리적 오류</div>
+      <div class="biases-grid" style="grid-template-columns:1fr; gap:12px;">
+
+        <div class="bias-card" style="display:flex; gap:14px; text-align:left; align-items:flex-start;">
+          <div style="font-size:2.2rem; flex-shrink:0;">⏰</div>
+          <div>
+            <div class="bias-en">Present Bias</div>
+            <div class="bias-name">현재편향</div>
+            <div class="bias-desc">현재의 소비를 미래의 가치보다 과대평가하는 경향</div>
+            <div class="bias-solution">모든 소득을 투자 자산으로 일원화하고, 장기적 관점에서 수익 중심 생활을 설계한다.</div>
+          </div>
         </div>
 
-        <!-- Section 7-8: Risk Levels Table -->
-        <section class="card p-8 mb-8 overflow-hidden">
-            <h2 class="text-2xl font-bold mb-2">투자 위험등급 전체 구조</h2>
-            <p class="text-gray-500 mb-6">수익률이 아니라 '얼마나 버틸 수 있는가'의 기준입니다.</p>
-            
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="border-b-2 border-gray-100">
-                            <th class="py-4 px-2 font-bold text-gray-400">등급</th>
-                            <th class="py-4 px-2 font-bold">의미</th>
-                            <th class="py-4 px-2 font-bold">한 줄 요약</th>
-                            <th class="py-4 px-2 font-bold">대표 상품</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="risk-6 hover:bg-gray-50 transition">
-                            <td class="py-4 px-2 font-bold">6등급</td>
-                            <td class="py-4 px-2">최저위험</td>
-                            <td class="py-4 px-2 italic">돈 지키기</td>
-                            <td class="py-4 px-2 text-sm text-gray-600">CMA, 단기채, 현금</td>
-                        </tr>
-                        <tr class="risk-5 hover:bg-gray-50 transition">
-                            <td class="py-4 px-2 font-bold text-blue-600">5등급</td>
-                            <td class="py-4 px-2">저위험</td>
-                            <td class="py-4 px-2 italic">투자 시작</td>
-                            <td class="py-4 px-2 text-sm text-gray-600">국채, 우량 회사채</td>
-                        </tr>
-                        <tr class="risk-4 hover:bg-gray-50 transition">
-                            <td class="py-4 px-2 font-bold text-emerald-600">4등급</td>
-                            <td class="py-4 px-2">중위험</td>
-                            <td class="py-4 px-2 italic">자산관리 핵심</td>
-                            <td class="py-4 px-2 text-sm text-gray-600">자산배분 ETF, 혼합형</td>
-                        </tr>
-                        <tr class="risk-3 hover:bg-gray-50 transition">
-                            <td class="py-4 px-2 font-bold text-yellow-600">3등급</td>
-                            <td class="py-4 px-2">중고위험</td>
-                            <td class="py-4 px-2 italic">자산 증식</td>
-                            <td class="py-4 px-2 text-sm text-gray-600">인덱스 주식형 ETF</td>
-                        </tr>
-                        <tr class="risk-2 hover:bg-gray-50 transition">
-                            <td class="py-4 px-2 font-bold text-orange-600">2등급</td>
-                            <td class="py-4 px-2">고위험</td>
-                            <td class="py-4 px-2 italic">집중 투자</td>
-                            <td class="py-4 px-2 text-sm text-gray-600">성장주, 섹터 ETF</td>
-                        </tr>
-                        <tr class="risk-1 hover:bg-gray-50 transition">
-                            <td class="py-4 px-2 font-bold text-red-600">1등급</td>
-                            <td class="py-4 px-2">초고위험</td>
-                            <td class="py-4 px-2 italic">투기적 접근</td>
-                            <td class="py-4 px-2 text-sm text-gray-600">개별주식, 코인, 레버리지</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
+        <div class="bias-card" style="display:flex; gap:14px; text-align:left; align-items:flex-start;">
+          <div style="font-size:2.2rem; flex-shrink:0;">👛</div>
+          <div>
+            <div class="bias-en">Mental Accounting</div>
+            <div class="bias-name">정신회계 오류</div>
+            <div class="bias-desc">소득과 자산을 분리해 보며 비효율적인 소비를 한다.</div>
+            <div class="bias-solution">소득과 자산을 하나의 통합된 재무 시스템으로 관리한다.</div>
+          </div>
+        </div>
 
-        <!-- Section 10: Standard Portfolio -->
-        <section class="card p-8 mb-8 bg-blue-50 border-2 border-blue-100">
-            <h2 class="text-2xl font-bold mb-4 text-blue-900">4등급: 가장 표준적인 투자 구조</h2>
-            <p class="mb-6 text-blue-800">초보자가 정착해야 할 <span class="font-bold">자산배분</span>의 핵심 구간입니다.</p>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="bg-white p-4 rounded-lg shadow-sm text-center">
-                    <p class="text-xs text-gray-500 mb-1">주식</p>
-                    <p class="font-bold text-xl">25%</p>
-                </div>
-                <div class="bg-white p-4 rounded-lg shadow-sm text-center">
-                    <p class="text-xs text-gray-500 mb-1">채권</p>
-                    <p class="font-bold text-xl">25%</p>
-                </div>
-                <div class="bg-white p-4 rounded-lg shadow-sm text-center">
-                    <p class="text-xs text-gray-500 mb-1">금·원자재</p>
-                    <p class="font-bold text-xl">25%</p>
-                </div>
-                <div class="bg-white p-4 rounded-lg shadow-sm text-center">
-                    <p class="text-xs text-gray-500 mb-1">달러·현금</p>
-                    <p class="font-bold text-xl">25%</p>
-                </div>
-            </div>
-            <p class="mt-6 font-bold text-center text-blue-900 italic">"투자를 잘한다의 기준은 오래 살아남는 것입니다."</p>
-        </section>
+        <div class="bias-card" style="display:flex; gap:14px; text-align:left; align-items:flex-start;">
+          <div style="font-size:2.2rem; flex-shrink:0;">📉</div>
+          <div>
+            <div class="bias-en">Loss Aversion</div>
+            <div class="bias-name">손실회피 성향</div>
+            <div class="bias-desc">손실을 피하려다 올바른 투자를 주저하게 된다.</div>
+            <div class="bias-solution">단기 손실에 흔들리지 않는 장기 투자 원칙을 확립한다.</div>
+          </div>
+        </div>
 
-        <!-- Conclusion -->
-        <section class="card p-8 text-center">
-            <h2 class="text-3xl font-bold mb-6">처음부터 수익을 내려고 하지 마세요</h2>
-            <div class="flex flex-wrap justify-center gap-4 mb-8">
-                <span class="bg-gray-100 px-4 py-2 rounded-full text-sm">자금 분리</span>
-                <i class="fas fa-chevron-right self-center text-gray-300"></i>
-                <span class="bg-gray-100 px-4 py-2 rounded-full text-sm">6→5등급 경험</span>
-                <i class="fas fa-chevron-right self-center text-gray-300"></i>
-                <span class="bg-blue-100 text-blue-600 px-4 py-2 rounded-full text-sm font-bold">4등급 정착</span>
-                <i class="fas fa-chevron-right self-center text-gray-300"></i>
-                <span class="bg-gray-100 px-4 py-2 rounded-full text-sm">3등급 시도</span>
-            </div>
-            <div class="border-t pt-8">
-                <h3 class="text-xl font-bold mb-4 italic">"투자는 기술이 아니라 <span class="text-blue-600">구조</span>입니다"</h3>
-                <p class="text-gray-600 leading-relaxed">
-                    수익보다 먼저 버틸 수 있는 구조를 만드세요.<br>
-                    구조가 만들어지면, 수익은 자연스럽게 따라옵니다.
-                </p>
-            </div>
-        </section>
+      </div>
+    </div>
+  </div>
 
-    </main>
+  <!-- ═══ SECTION 7 & 8 ═════════════════════════════════ -->
+  <div class="grid-2 mb-32">
 
-    <footer class="mt-12 text-center text-gray-400 text-sm px-6">
-        <p>© 2024 Investment Basics Guide. All rights reserved.</p>
-        <p class="mt-2">이 자료는 투자 권유가 아닌 교육을 목적으로 제작되었습니다.</p>
-    </footer>
+    <!-- Section 7 -->
+    <div class="card">
+      <div class="section-title">7. 실천 원칙</div>
+      <ul class="principles-list">
+        <li>
+          <span class="principle-icon">🎯</span>
+          <span class="principle-text">모든 소득은 1차적으로 자산화</span>
+        </li>
+        <li>
+          <span class="principle-icon">📊</span>
+          <span class="principle-text">소비는 투자수익 범위 내에서 수행</span>
+        </li>
+        <li>
+          <span class="principle-icon">🛡️</span>
+          <span class="principle-text">원금 훼손 없는 소비 구조 유지</span>
+        </li>
+        <li>
+          <span class="principle-icon">🔄</span>
+          <span class="principle-text">배당 재투자 비율을 유지하여 수익의 파이 키우기</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Section 8 -->
+    <div class="formula-section">
+      <h3>8. 한눈에 보는 수익소비 공식</h3>
+
+      <div class="formula-row">
+        <div class="formula-box-dark">💼 총소득</div>
+        <div class="formula-eq">=</div>
+        <div class="formula-box-dark">📈 투자금</div>
+        <div class="formula-plus">+</div>
+        <div class="formula-box-dark">🏠 최소생활비(초기)</div>
+      </div>
+      <span class="formula-down">↓</span>
+      <div class="formula-row">
+        <div class="formula-box-dark">📈 투자금</div>
+        <div style="color:#94a3b8; font-size:1.2rem; font-weight:700;">→</div>
+        <div class="formula-box-dark">🏦 자산</div>
+        <div style="color:#94a3b8; font-size:1.2rem; font-weight:700;">→</div>
+        <div class="formula-box-dark">💰 수익 발생</div>
+      </div>
+      <span class="formula-down">↓</span>
+      <div class="formula-row">
+        <div class="formula-box-dark highlight">🛒 소비 = 투자수익의 범위 내</div>
+      </div>
+    </div>
+
+  </div>
+
+</div><!-- /wrapper -->
+
+<!-- ═══ FOOTER ═══════════════════════════════════════════════ -->
+<div class="footer-section">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-quote">
+        "오늘의 소비를 줄이면,<br><span>내일의 자유가 커진다.</span>"
+      </div>
+      <p class="footer-sub">
+        수익소비는 단순한 절약이 아니라, 소비의 재원을 노동에서 자산으로 전환하는 재무 전략이다.
+        자산이 당신을 위해 일하게 만들고, 그 수익으로 생활을 지탱하는 구조를 구축하는 것이 목표다.
+      </p>
+      <div class="footer-cta">
+        수익소비는 선택이 아니라, 지속 가능한 삶을 위한 필수 전략이다!<br>
+        지금부터 당신의 소비의 재원을 '소득'에서 '수익'으로 바꾸어라!
+      </div>
+    </div>
+
+    <div>
+      <ul class="footer-checklist">
+        <li>자산이 당신을 위해 일하게 하라</li>
+        <li>수익이 당신의 삶을 지탱하게 하라</li>
+        <li>수익으로 소비하는 삶이 진짜 자유다</li>
+      </ul>
+      <!-- Tree with coins -->
+      <div style="text-align:center; margin-top:20px; font-size:3.5rem; line-height:1;">
+        🌳<br>
+        <span style="font-size:1.5rem;">💰💰💰</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
